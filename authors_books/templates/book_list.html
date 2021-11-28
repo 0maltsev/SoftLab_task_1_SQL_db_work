@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <meta charset="UTF-8">
+    <title>Titles</title>
+</head>
+<body>
+    <a href = "{% url 'author_list'  %}"> Назад </a>
+    {% for author in authors %}
+        <div>
+            <h1>
+                {{author.author}}
+            </h1>
+        </div>
+    {% endfor %}
+    {% for title in titles %}
+        <div>
+            {{title}}
+        </div>
+    {% endfor %}
+    <div>
+        <form method="POST" action="">
+            {% csrf_token %}
+            <div style="display: none; visibility: hidden">
+                {{ form.author_id }}
+            </div>
+            {{ form.title }}
+            <input  type="submit">
+        </form>
+    </div>
+</body>
+</html>
