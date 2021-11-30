@@ -7,11 +7,9 @@ from .query import *
 
 
 def main(request):
-    #set_authors()
-    #set_titles()
-    #get_title_count()
     authors = Author.objects.all()
-    context = {'authors': authors}
+    counters = Title.objects.values('author_id').annotate(total=Count('title'))
+    context = {'authors': authors, 'counters': counters}
     return render(request, 'main.html', context)
 
 def book_list(request, pk):
@@ -24,7 +22,6 @@ def book_list(request, pk):
         form = NewBookForm(request.POST)
         if form.is_valid():
             form.save()
-            get_title_count()
 
     context = {'titles': titles, 'authors': authors, 'form': form}
     return render(request, 'book_list.html', context)

@@ -38,8 +38,4 @@ def set_titles():
     title_9.save()
 
 
-def get_title_count():
-    all_id = list(Author.objects.all())
-    for the_id in all_id:
-        the_id.title_count = Title.objects.filter(author_id=the_id.author_id).count()
-        the_id.save()
+
