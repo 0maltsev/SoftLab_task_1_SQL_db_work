@@ -4,5 +4,5 @@ from .models import *
 
 # Register your models here.
 
-admin.site.register(Author)
-admin.site.register(Title)
+admin.site.register(names)
+admin.site.register(books)
