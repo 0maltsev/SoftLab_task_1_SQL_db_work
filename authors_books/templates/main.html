@@ -11,7 +11,7 @@
         <div class="col-2">
             {% for author in authors %}
                 <div>
-                <a href = "{% url 'title_list' author.author_id %}"> {{author.author}} </a>
+                <a href = "{% url 'title_list' author.author_id %}"> {{author.name}} </a>
 
                 </div>
             {% endfor %}

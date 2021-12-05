@@ -4,27 +4,28 @@ from .models import *
 from .forms import *
 from .query import *
 from django.db import connection
+from .data_base_alchemy.book_author_db import *
+from sqlalchemy import func, create_engine
+from sqlalchemy.orm import sessionmaker
 # Create your views here.
 
+engine = create_engine('sqlite:///../../Classed_db.sqlite3', echo=True)
+
+# создадим сессию работы с бд
+session = sessionmaker(bind=engine)
+s = session()
 
 def main(request):
-    authors = conn.execute(names.select(names.c.name))
-    counters = conn.execute(select([func.count(books.c.title)]).group_by(books.c.author_id))
-
+    authors = s.query(Author).all()
+    counters = s.query(func.count(Book.title)).group_by(Book.author_id).all()
     context = {'authors': authors, 'counters': counters}
     return render(request, 'main.html', context)
 
 def book_list(request, pk):
-    titles = conn.execute(books.select(books.c.title).where(books.c.author_id == pk))
-    authors = conn.execute(names.select(names.c.name).where(names.c.id_author == pk))
+    titles = s.query(Book).filter(Book.author_id == pk).all()
+    authors = s.query(Author).filter(Author.id_author == pk).all()
 
-    form = NewBookForm()
-    form.fields['author_id'].initial = pk
-    if request.method == 'POST':
-        print(request.POST)
-        form = NewBookForm(request.POST)
-        if form.is_valid():
-            form.save()
 
-    context = {'titles': titles, 'authors': authors, 'form': form}
+
+    context = {'titles': titles, 'authors': authors}
     return render(request, 'book_list.html', context)
