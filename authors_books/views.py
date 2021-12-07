@@ -33,7 +33,16 @@ def book_list(request, pk):
     titles = s.query(Book).filter(Book.author_id == pk).all()
     authors = s.query(Author).filter(Author.id_author == pk).all()
 
-
-
-    context = {'titles': titles, 'authors': authors}
+    form = NewBookForm()
+    form.fields['author_id'].initial = pk
+    if request.method == 'POST':
+        form = NewBookForm(request.POST)
+        if form.is_valid():
+            author_id = form.cleaned_data['author_id']
+            title = form.cleaned_data['title']
+            print(author_id, title)
+            s.add_all([Book(author_id=author_id, title=title)])
+            s.commit()
+            return redirect(request.META['HTTP_REFERER'])
+    context = {'titles': titles, 'authors': authors, 'form': form}
     return render(request, 'book_list.html', context)
