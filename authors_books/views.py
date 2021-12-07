@@ -24,6 +24,9 @@ def main(request):
             counters.append(row[0])
     except:
         s.rollback()
+    finally:
+        s.close()
+
     context = {'authors': authors, 'counters': counters}
     return render(request, 'main.html', context)
 
@@ -37,6 +40,8 @@ def book_list(request, pk):
         authors = s.query(Author).filter(Author.id_author == pk).all()
     except:
         s.rollback()
+    finally:
+        s.close()
 
     form = NewBookForm()
     form.fields['author_id'].initial = pk
@@ -51,6 +56,8 @@ def book_list(request, pk):
                 s.commit()
             except:
                 s.rollback()
+            finally:
+                s.close()
             return redirect(request.META['HTTP_REFERER'])
     context = {'titles': titles, 'authors': authors, 'form': form}
     return render(request, 'book_list.html', context)
