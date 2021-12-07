@@ -1,6 +1,5 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
-from .models import *
 from .forms import *
 from .query import *
 from django.db import connection
@@ -11,17 +10,26 @@ from sqlalchemy.orm import sessionmaker
 
 engine = create_engine('sqlite:///../../Classed_db.sqlite3', echo=True)
 
-# создадим сессию работы с бд
-session = sessionmaker(bind=engine)
-s = session()
+
 
 def main(request):
+
+    session = sessionmaker(bind=engine)
+    s = session()
     authors = s.query(Author).all()
-    counters = s.query(func.count(Book.title)).group_by(Book.author_id).all()
+    rows = s.query(func.count(Book.title)).group_by(Book.author_id).all()
+    counters = list()
+    for row in rows:
+        counters.append(row[0])
+
     context = {'authors': authors, 'counters': counters}
     return render(request, 'main.html', context)
 
+
 def book_list(request, pk):
+
+    session = sessionmaker(bind=engine)
+    s = session()
     titles = s.query(Book).filter(Book.author_id == pk).all()
     authors = s.query(Author).filter(Author.id_author == pk).all()
 

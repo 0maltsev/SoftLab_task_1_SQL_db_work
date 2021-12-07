@@ -1,7 +1,7 @@
-from sqlalchemy import create_engine, Column, ForeignKey, Integer, String
+from sqlalchemy import create_engine, Column, ForeignKey, Integer, String, delete
 from sqlalchemy.ext. declarative import declarative_base
 from sqlalchemy.orm import relationship
-
+from sqlalchemy.orm import sessionmaker
 engine = create_engine('sqlite:///../../Classed_db.sqlite3', echo=True)
 
 Base = declarative_base()
@@ -25,3 +25,6 @@ class Author(Base):
 
 
 Base.metadata.create_all(engine)
+
+
+

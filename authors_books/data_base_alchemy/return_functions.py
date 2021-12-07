@@ -44,3 +44,4 @@ def author_title(pk):
         result.append(row.name)
     return result
 
+print(s.query().all())
