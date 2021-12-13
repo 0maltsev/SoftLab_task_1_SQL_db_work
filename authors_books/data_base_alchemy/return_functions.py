@@ -44,4 +44,17 @@ def author_title(pk):
         result.append(row.name)
     return result
 
-print(s.query().all())
+# def add_new_book_to_db(form):
+#     form = form(request.POST)
+#     if form.is_valid():
+#         try:
+#             author_id = form.cleaned_data['author_id']
+#             title = form.cleaned_data['title']
+#             print(author_id, title)
+#             s.add_all([Book(author_id=author_id, title=title)])
+#             s.commit()
+#         except:
+#             s.rollback()
+#         finally:
+#             s.close()
+#         return redirect(request.META['HTTP_REFERER'])

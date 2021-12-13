@@ -126,3 +126,37 @@ STATIC_URL = '/static/'
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+
+'formatters': {
+        'basic_formatter': {
+            'format': '{levelname} {asctime} {module} {process:d} {thread:d} {message}',
+            'style': '{',
+        },
+    },
+
+    'handlers': {
+        'err_file': {
+            'level': 'ERROR',
+            'class': 'logging.FileHandler',
+            'filename': '/Users/megol/Desktop/softlab/books/logs/ERROR.log',
+            'formatter': 'basic_formatter',
+        },
+        'info_console': {
+            'level': 'INFO',
+            'class': 'logging.StreamHandler',
+            'formatter': 'basic_formatter',
+        }
+    },
+
+    'loggers': {
+        'authors_books': {
+            'handlers': ['err_file', 'info_console'],
+            'level': 'INFO',
+            'propogate': True,
+        },
+    },
+}
