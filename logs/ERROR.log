@@ -1,1 +1,16 @@
 
+ERROR 2021-12-15 18:16:25,403 views 644 7016 cant get info from db on title_list screen
+
+ERROR 2021-12-15 19:02:54,293 views 4008 6112 name 'Books' is not defined
+Traceback (most recent call last):
+  File "C:\Users\megol\Desktop\softlab\books\authors_books\views.py", line 50, in book_list
+    titles = s.query(Books).filter(Book.author_id == pk).all()
+NameError: name 'Books' is not defined
+
+
+
+ERROR 2021-12-15 19:08:07,044 views 22684 22936 name 'title' is not defined
+Traceback (most recent call last):
+  File "C:\Users\megol\Desktop\softlab\books\authors_books\views.py", line 71, in book_list
+    s.add_all([Book(author_id=author_id, title=title)])
+NameError: name 'title' is not defined
