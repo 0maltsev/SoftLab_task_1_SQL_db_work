@@ -1,6 +1,10 @@
-from book_author_db import *
+from .book_author_db import *
 from sqlalchemy import func
 from sqlalchemy.orm import sessionmaker
+from django.shortcuts import redirect, HttpResponse
+import logging
+
+logger = logging.getLogger(__name__)
 
 engine = create_engine('sqlite:///../../Classed_db.sqlite3', echo=True)
 
@@ -44,17 +48,20 @@ def author_title(pk):
         result.append(row.name)
     return result
 
-# def add_new_book_to_db(form):
-#     form = form(request.POST)
-#     if form.is_valid():
-#         try:
-#             author_id = form.cleaned_data['author_id']
-#             title = form.cleaned_data['title']
-#             print(author_id, title)
-#             s.add_all([Book(author_id=author_id, title=title)])
-#             s.commit()
-#         except:
-#             s.rollback()
-#         finally:
-#             s.close()
-#         return redirect(request.META['HTTP_REFERER'])
+def add_new_book_to_db(form, request):
+    if form.is_valid():
+        try:
+            author_id = form.cleaned_data['author_id']
+            title = form.cleaned_data['title']
+
+            s.add_all([Book(author_id=author_id, title=title)])
+            s.commit()
+            logger.info('client adds new book to title_list')
+        except Exception as ex:
+            logger.error(ex, exc_info=True)
+            s.rollback()
+            return HttpResponse(status=500, content="Internal Server Error")
+        finally:
+            s.close()
+
+        return redirect(request.META['HTTP_REFERER'])

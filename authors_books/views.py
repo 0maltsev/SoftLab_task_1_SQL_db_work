@@ -1,5 +1,5 @@
 import logging
-
+from .data_base_alchemy.return_functions import add_new_book_to_db
 from django.shortcuts import render, redirect, HttpResponse
 from django.http import HttpResponse
 from .forms import *
@@ -19,7 +19,7 @@ def main(request):
 
     session = sessionmaker(bind=engine)
     s = session()
-    problem_check = 0
+
     try:
         authors = s.query(Author).all()
         rows = s.query(func.count(Book.title)).group_by(Book.author_id).all()
@@ -59,22 +59,7 @@ def book_list(request, pk):
     form.fields['author_id'].initial = pk
     if request.method == 'POST':
         form = NewBookForm(request.POST)
-        if form.is_valid():
-            try:
-                author_id = form.cleaned_data['author_id']
-                title = form.cleaned_data['title']
-
-                s.add_all([Book(author_id=author_id, title=title)])
-                s.commit()
-                logger.info('client adds new book to title_list')
-            except Exception as ex:
-                logger.error(ex, exc_info=True)
-                s.rollback()
-                return HttpResponse(status=500, content="Internal Server Error")
-            finally:
-                s.close()
-
-            return redirect(request.META['HTTP_REFERER'])
+        return add_new_book_to_db(form, request)
 
     context = {'titles': titles, 'authors': authors, 'form': form}
     return render(request, 'book_list.html', context)
