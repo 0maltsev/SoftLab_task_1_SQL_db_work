@@ -11,6 +11,7 @@ from sqlalchemy.orm import sessionmaker
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
+from .utils import RESP_MSG_INTERNAL_ERROR
 # Create your views here.
 
 logger = logging.getLogger(__name__)
@@ -34,7 +35,7 @@ def main(request):
         problem_check = 1
         logger.error(ex, exc_info=True)
         s.rollback()
-        return HttpResponse(status=500, content="Internal Server Error")
+        return HttpResponse(status=500, content=RESP_MSG_INTERNAL_ERROR)
     finally:
         s.close()
 
@@ -54,7 +55,7 @@ def book_list(request, pk):
     except Exception as ex:
         logger.error(ex, exc_info=True)
         s.rollback()
-        return HttpResponse(status=500, content="Internal Server Error")
+        return HttpResponse(status=500, content=RESP_MSG_INTERNAL_ERROR)
     finally:
         s.close()
 
@@ -62,7 +63,12 @@ def book_list(request, pk):
     form.fields['author_id'].initial = pk
     if request.method == 'POST':
         form = NewBookForm(request.POST)
-        return add_new_book_to_db(form, request)
+        try:
+            add_new_book_to_db(form, request)
+            return redirect(request.META['HTTP_REFERER'])
+        except:
+            return HttpResponse(status=500, content="Internal Server Error")
+
 
     context = {'titles': titles, 'authors': authors, 'form': form}
     return render(request, 'book_list.html', context)

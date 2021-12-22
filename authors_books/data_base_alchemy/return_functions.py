@@ -60,8 +60,8 @@ def add_new_book_to_db(form, request):
         except Exception as ex:
             logger.error(ex, exc_info=True)
             s.rollback()
-            return HttpResponse(status=500, content="Internal Server Error")
+            raise ex
         finally:
             s.close()
 
-        return redirect(request.META['HTTP_REFERER'])
+

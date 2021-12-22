@@ -14,3 +14,19 @@ Traceback (most recent call last):
   File "C:\Users\megol\Desktop\softlab\books\authors_books\views.py", line 71, in book_list
     s.add_all([Book(author_id=author_id, title=title)])
 NameError: name 'title' is not defined
+ERROR 2021-12-22 15:00:01,813 return_functions 2464 16532 'author_ids' is an invalid keyword argument for Book
+Traceback (most recent call last):
+  File "C:\Users\megol\Desktop\softlab\books\authors_books\data_base_alchemy\return_functions.py", line 57, in add_new_book_to_db
+    s.add_all([Book(author_ids=author_id, title=title)])
+  File "<string>", line 4, in __init__
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\orm\state.py", line 441, in _initialize_instance
+    manager.dispatch.init_failure(self, args, kwargs)
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\util\langhelpers.py", line 68, in __exit__
+    compat.reraise(exc_type, exc_value, exc_tb)
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\util\compat.py", line 153, in reraise
+    raise value
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\orm\state.py", line 438, in _initialize_instance
+    return manager.original_init(*mixed[1:], **kwargs)
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\ext\declarative\base.py", line 839, in _declarative_constructor
+    raise TypeError(
+TypeError: 'author_ids' is an invalid keyword argument for Book
