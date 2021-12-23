@@ -5,6 +5,13 @@
     <title>Login</title>
 </head>
 <body>
-
+    <h1>Login page</h1>
+    <form method="POST" action="">
+        {% csrf_token %}
+        <input type="username" name="username" placeholder="Username" class="form-control">
+        <input type="password" name="password" placeholder="Password" class="form-control">
+        <input type="submit" name="Login">
+    </form>
+    <a href="{% url 'register' %}">Create a new account</a>
 </body>
 </html>

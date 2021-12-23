@@ -12,6 +12,7 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from .utils import RESP_MSG_INTERNAL_ERROR
+from django.contrib.auth.decorators import login_required
 # Create your views here.
 
 logger = logging.getLogger(__name__)
@@ -75,36 +76,41 @@ def book_list(request, pk):
 
 
 def registerPage(request):
-    form = CreateUserForm()
+    if request.user.is_authenticated:
+        return redirect('author_list')
+    else:
+        form = CreateUserForm()
 
-    if request.method == "POST":
-        form = CreateUserForm(request.POST)
-        if form.is_valid():
-            form.save()
-            username = form.cleaned_data.get('username')
-            messages.success(request, f'User {username} was created')
-            return redirect('login')
+        if request.method == "POST":
+            form = CreateUserForm(request.POST)
+            if form.is_valid():
+                form.save()
+                username = form.cleaned_data.get('username')
+                messages.success(request, f'User {username} was created')
+                return redirect('login')
 
-    context = {'form': form}
-    return render(request, 'register.html', context)
+        context = {'form': form}
+        return render(request, 'register.html', context)
 
 
 def loginPage(request):
+    if request.user.is_authenticated:
+        return redirect('author_list')
+    else:
+        if request.method == 'POST':
+            username = request.POST.get('username')
+            password = request.POST.get('password')
 
-    if request.method == 'POST':
-        username = request.POST.get('username')
-        password = request.POST.get('password')
+            user = authenticate(request, username=username, password=password)
 
-        user = authenticate(request, username=username, password=password)
+            if user is not None:
+                login(request, user)
+                return redirect('author_list')
+            else:
+                messages.info(request, 'Username OR password is incorrect')
 
-        if user is not None:
-            login(request, user)
-            return redirect('author_list')
-        else:
-            messages.info(request, 'Username OR password is incorrect')
-
-    context = {}
-    return render(request, 'login.html', context)
+        context = {}
+        return render(request, 'login.html', context)
 
 
 def logoutUser(request):
