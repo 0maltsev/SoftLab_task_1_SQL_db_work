@@ -30,3 +30,765 @@ Traceback (most recent call last):
   File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\ext\declarative\base.py", line 839, in _declarative_constructor
     raise TypeError(
 TypeError: 'author_ids' is an invalid keyword argument for Book
+ERROR 2022-01-08 19:38:31,242 views 16492 10960 On Book.author, delete-orphan cascade is not supported on a many-to-many or many-to-one relationship when single_parent is not set.   Set single_parent=True on the relationship().
+Traceback (most recent call last):
+  File "C:\Users\megol\Desktop\softlab\books\authors_books\views.py", line 29, in main
+    authors = s.query(Author).all()
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\orm\session.py", line 1544, in query
+    return self._query_cls(entities, self, **kwargs)
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\orm\query.py", line 168, in __init__
+    self._set_entities(entities)
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\orm\query.py", line 200, in _set_entities
+    self._set_entity_selectables(self._entities)
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\orm\query.py", line 231, in _set_entity_selectables
+    ent.setup_entity(*d[entity])
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\orm\query.py", line 4121, in setup_entity
+    self._with_polymorphic = ext_info.with_polymorphic_mappers
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\util\langhelpers.py", line 855, in __get__
+    obj.__dict__[self.__name__] = result = self.fget(obj)
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\orm\mapper.py", line 2135, in _with_polymorphic_mappers
+    configure_mappers()
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\orm\mapper.py", line 3248, in configure_mappers
+    mapper._post_configure_properties()
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\orm\mapper.py", line 1947, in _post_configure_properties
+    prop.init()
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\orm\interfaces.py", line 196, in init
+    self.do_init()
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\orm\relationships.py", line 1862, in do_init
+    self._check_cascade_settings(self._cascade)
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\orm\relationships.py", line 1996, in _check_cascade_settings
+    raise sa_exc.ArgumentError(
+sqlalchemy.exc.ArgumentError: On Book.author, delete-orphan cascade is not supported on a many-to-many or many-to-one relationship when single_parent is not set.   Set single_parent=True on the relationship().
+ERROR 2022-01-08 19:39:06,900 views 18704 18560 (sqlite3.OperationalError) no such column: association_1.book_id
+[SQL: SELECT count("Books".title) AS count_1 
+FROM "Books" GROUP BY "Books".id_book = association_1.book_id AND "Authors".id_author = association_1.author_id]
+(Background on this error at: http://sqlalche.me/e/e3q8)
+Traceback (most recent call last):
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\engine\base.py", line 1248, in _execute_context
+    self.dialect.do_execute(
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\engine\default.py", line 580, in do_execute
+    cursor.execute(statement, parameters)
+sqlite3.OperationalError: no such column: association_1.book_id
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\megol\Desktop\softlab\books\authors_books\views.py", line 30, in main
+    rows = s.query(func.count(Book.title)).group_by(Book.author).all()
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\orm\query.py", line 3186, in all
+    return list(self)
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\orm\query.py", line 3342, in __iter__
+    return self._execute_and_instances(context)
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\orm\query.py", line 3367, in _execute_and_instances
+    result = conn.execute(querycontext.statement, self._params)
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\engine\base.py", line 988, in execute
+    return meth(self, multiparams, params)
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\sql\elements.py", line 287, in _execute_on_connection
+    return connection._execute_clauseelement(self, multiparams, params)
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\engine\base.py", line 1101, in _execute_clauseelement
+    ret = self._execute_context(
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\engine\base.py", line 1252, in _execute_context
+    self._handle_dbapi_exception(
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\engine\base.py", line 1473, in _handle_dbapi_exception
+    util.raise_from_cause(sqlalchemy_exception, exc_info)
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\util\compat.py", line 398, in raise_from_cause
+    reraise(type(exception), exception, tb=exc_tb, cause=cause)
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\util\compat.py", line 152, in reraise
+    raise value.with_traceback(tb)
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\engine\base.py", line 1248, in _execute_context
+    self.dialect.do_execute(
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\engine\default.py", line 580, in do_execute
+    cursor.execute(statement, parameters)
+sqlalchemy.exc.OperationalError: (sqlite3.OperationalError) no such column: association_1.book_id
+[SQL: SELECT count("Books".title) AS count_1 
+FROM "Books" GROUP BY "Books".id_book = association_1.book_id AND "Authors".id_author = association_1.author_id]
+(Background on this error at: http://sqlalche.me/e/e3q8)
+ERROR 2022-01-08 19:52:58,277 views 19268 18476 'AssociationTable' object has no attribute 'foreign_keys'
+Traceback (most recent call last):
+  File "C:\Users\megol\Desktop\softlab\books\authors_books\views.py", line 29, in main
+    authors = s.query(Author).all()
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\orm\session.py", line 1544, in query
+    return self._query_cls(entities, self, **kwargs)
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\orm\query.py", line 168, in __init__
+    self._set_entities(entities)
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\orm\query.py", line 200, in _set_entities
+    self._set_entity_selectables(self._entities)
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\orm\query.py", line 231, in _set_entity_selectables
+    ent.setup_entity(*d[entity])
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\orm\query.py", line 4121, in setup_entity
+    self._with_polymorphic = ext_info.with_polymorphic_mappers
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\util\langhelpers.py", line 855, in __get__
+    obj.__dict__[self.__name__] = result = self.fget(obj)
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\orm\mapper.py", line 2135, in _with_polymorphic_mappers
+    configure_mappers()
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\orm\mapper.py", line 3248, in configure_mappers
+    mapper._post_configure_properties()
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\orm\mapper.py", line 1947, in _post_configure_properties
+    prop.init()
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\orm\interfaces.py", line 196, in init
+    self.do_init()
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\orm\relationships.py", line 1861, in do_init
+    self._setup_join_conditions()
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\orm\relationships.py", line 1925, in _setup_join_conditions
+    self._join_condition = jc = JoinCondition(
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\orm\relationships.py", line 2246, in __init__
+    self._determine_joins()
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\orm\relationships.py", line 2342, in _determine_joins
+    self.secondaryjoin = join_condition(
+  File "<string>", line 2, in join_condition
+  File "<string>", line 2, in _join_condition
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\util\deprecations.py", line 128, in warned
+    return fn(*args, **kwargs)
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\sql\selectable.py", line 927, in _join_condition
+    constraints = cls._joincond_scan_left_right(
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\sql\selectable.py", line 982, in _joincond_scan_left_right
+    b.foreign_keys, key=lambda fk: fk.parent._creation_order
+AttributeError: 'AssociationTable' object has no attribute 'foreign_keys'
+ERROR 2022-01-08 19:56:00,966 views 7604 16636 'AssociationTable' object has no attribute 'foreign_keys'
+Traceback (most recent call last):
+  File "C:\Users\megol\Desktop\softlab\books\authors_books\views.py", line 29, in main
+    authors = s.query(Author).all()
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\orm\session.py", line 1544, in query
+    return self._query_cls(entities, self, **kwargs)
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\orm\query.py", line 168, in __init__
+    self._set_entities(entities)
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\orm\query.py", line 200, in _set_entities
+    self._set_entity_selectables(self._entities)
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\orm\query.py", line 231, in _set_entity_selectables
+    ent.setup_entity(*d[entity])
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\orm\query.py", line 4121, in setup_entity
+    self._with_polymorphic = ext_info.with_polymorphic_mappers
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\util\langhelpers.py", line 855, in __get__
+    obj.__dict__[self.__name__] = result = self.fget(obj)
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\orm\mapper.py", line 2135, in _with_polymorphic_mappers
+    configure_mappers()
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\orm\mapper.py", line 3248, in configure_mappers
+    mapper._post_configure_properties()
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\orm\mapper.py", line 1947, in _post_configure_properties
+    prop.init()
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\orm\interfaces.py", line 196, in init
+    self.do_init()
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\orm\relationships.py", line 1861, in do_init
+    self._setup_join_conditions()
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\orm\relationships.py", line 1925, in _setup_join_conditions
+    self._join_condition = jc = JoinCondition(
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\orm\relationships.py", line 2246, in __init__
+    self._determine_joins()
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\orm\relationships.py", line 2342, in _determine_joins
+    self.secondaryjoin = join_condition(
+  File "<string>", line 2, in join_condition
+  File "<string>", line 2, in _join_condition
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\util\deprecations.py", line 128, in warned
+    return fn(*args, **kwargs)
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\sql\selectable.py", line 927, in _join_condition
+    constraints = cls._joincond_scan_left_right(
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\sql\selectable.py", line 982, in _joincond_scan_left_right
+    b.foreign_keys, key=lambda fk: fk.parent._creation_order
+AttributeError: 'AssociationTable' object has no attribute 'foreign_keys'
+ERROR 2022-01-08 19:56:25,544 views 11000 18368 (sqlite3.OperationalError) no such column: association_1.book_id
+[SQL: SELECT count("Books".title) AS count_1 
+FROM "Books" GROUP BY "Books".id_book = association_1.book_id AND "Authors".id_author = association_1.author_id]
+(Background on this error at: http://sqlalche.me/e/e3q8)
+Traceback (most recent call last):
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\engine\base.py", line 1248, in _execute_context
+    self.dialect.do_execute(
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\engine\default.py", line 580, in do_execute
+    cursor.execute(statement, parameters)
+sqlite3.OperationalError: no such column: association_1.book_id
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\megol\Desktop\softlab\books\authors_books\views.py", line 30, in main
+    rows = s.query(func.count(Book.title)).group_by(Book.author).all()
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\orm\query.py", line 3186, in all
+    return list(self)
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\orm\query.py", line 3342, in __iter__
+    return self._execute_and_instances(context)
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\orm\query.py", line 3367, in _execute_and_instances
+    result = conn.execute(querycontext.statement, self._params)
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\engine\base.py", line 988, in execute
+    return meth(self, multiparams, params)
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\sql\elements.py", line 287, in _execute_on_connection
+    return connection._execute_clauseelement(self, multiparams, params)
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\engine\base.py", line 1101, in _execute_clauseelement
+    ret = self._execute_context(
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\engine\base.py", line 1252, in _execute_context
+    self._handle_dbapi_exception(
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\engine\base.py", line 1473, in _handle_dbapi_exception
+    util.raise_from_cause(sqlalchemy_exception, exc_info)
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\util\compat.py", line 398, in raise_from_cause
+    reraise(type(exception), exception, tb=exc_tb, cause=cause)
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\util\compat.py", line 152, in reraise
+    raise value.with_traceback(tb)
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\engine\base.py", line 1248, in _execute_context
+    self.dialect.do_execute(
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\engine\default.py", line 580, in do_execute
+    cursor.execute(statement, parameters)
+sqlalchemy.exc.OperationalError: (sqlite3.OperationalError) no such column: association_1.book_id
+[SQL: SELECT count("Books".title) AS count_1 
+FROM "Books" GROUP BY "Books".id_book = association_1.book_id AND "Authors".id_author = association_1.author_id]
+(Background on this error at: http://sqlalche.me/e/e3q8)
+ERROR 2022-01-08 20:16:45,125 views 4864 12772 'AssociationTable' object has no attribute 'foreign_keys'
+Traceback (most recent call last):
+  File "C:\Users\megol\Desktop\softlab\books\authors_books\views.py", line 29, in main
+    authors = s.query(Author).all()
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\orm\session.py", line 1544, in query
+    return self._query_cls(entities, self, **kwargs)
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\orm\query.py", line 168, in __init__
+    self._set_entities(entities)
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\orm\query.py", line 200, in _set_entities
+    self._set_entity_selectables(self._entities)
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\orm\query.py", line 231, in _set_entity_selectables
+    ent.setup_entity(*d[entity])
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\orm\query.py", line 4121, in setup_entity
+    self._with_polymorphic = ext_info.with_polymorphic_mappers
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\util\langhelpers.py", line 855, in __get__
+    obj.__dict__[self.__name__] = result = self.fget(obj)
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\orm\mapper.py", line 2135, in _with_polymorphic_mappers
+    configure_mappers()
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\orm\mapper.py", line 3248, in configure_mappers
+    mapper._post_configure_properties()
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\orm\mapper.py", line 1947, in _post_configure_properties
+    prop.init()
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\orm\interfaces.py", line 196, in init
+    self.do_init()
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\orm\relationships.py", line 1861, in do_init
+    self._setup_join_conditions()
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\orm\relationships.py", line 1925, in _setup_join_conditions
+    self._join_condition = jc = JoinCondition(
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\orm\relationships.py", line 2246, in __init__
+    self._determine_joins()
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\orm\relationships.py", line 2342, in _determine_joins
+    self.secondaryjoin = join_condition(
+  File "<string>", line 2, in join_condition
+  File "<string>", line 2, in _join_condition
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\util\deprecations.py", line 128, in warned
+    return fn(*args, **kwargs)
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\sql\selectable.py", line 927, in _join_condition
+    constraints = cls._joincond_scan_left_right(
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\sql\selectable.py", line 982, in _joincond_scan_left_right
+    b.foreign_keys, key=lambda fk: fk.parent._creation_order
+AttributeError: 'AssociationTable' object has no attribute 'foreign_keys'
+ERROR 2022-01-08 20:35:32,153 views 11000 4076 Could not determine join condition between parent/child tables on relationship Book.author - there are no foreign keys linking these tables via secondary table 'Association'.  Ensure that referencing columns are associated with a ForeignKey or ForeignKeyConstraint, or specify 'primaryjoin' and 'secondaryjoin' expressions.
+Traceback (most recent call last):
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\orm\relationships.py", line 2349, in _determine_joins
+    self.primaryjoin = join_condition(
+  File "<string>", line 2, in join_condition
+  File "<string>", line 2, in _join_condition
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\util\deprecations.py", line 128, in warned
+    return fn(*args, **kwargs)
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\sql\selectable.py", line 944, in _join_condition
+    raise exc.NoForeignKeysError(
+sqlalchemy.exc.NoForeignKeysError: Can't find any foreign key relationships between 'Books' and 'Association'.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\megol\Desktop\softlab\books\authors_books\views.py", line 29, in main
+    authors = s.query(Author).all()
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\orm\session.py", line 1544, in query
+    return self._query_cls(entities, self, **kwargs)
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\orm\query.py", line 168, in __init__
+    self._set_entities(entities)
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\orm\query.py", line 200, in _set_entities
+    self._set_entity_selectables(self._entities)
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\orm\query.py", line 231, in _set_entity_selectables
+    ent.setup_entity(*d[entity])
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\orm\query.py", line 4121, in setup_entity
+    self._with_polymorphic = ext_info.with_polymorphic_mappers
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\util\langhelpers.py", line 855, in __get__
+    obj.__dict__[self.__name__] = result = self.fget(obj)
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\orm\mapper.py", line 2135, in _with_polymorphic_mappers
+    configure_mappers()
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\orm\mapper.py", line 3248, in configure_mappers
+    mapper._post_configure_properties()
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\orm\mapper.py", line 1947, in _post_configure_properties
+    prop.init()
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\orm\interfaces.py", line 196, in init
+    self.do_init()
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\orm\relationships.py", line 1861, in do_init
+    self._setup_join_conditions()
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\orm\relationships.py", line 1925, in _setup_join_conditions
+    self._join_condition = jc = JoinCondition(
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\orm\relationships.py", line 2246, in __init__
+    self._determine_joins()
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\orm\relationships.py", line 2365, in _determine_joins
+    raise sa_exc.NoForeignKeysError(
+sqlalchemy.exc.NoForeignKeysError: Could not determine join condition between parent/child tables on relationship Book.author - there are no foreign keys linking these tables via secondary table 'Association'.  Ensure that referencing columns are associated with a ForeignKey or ForeignKeyConstraint, or specify 'primaryjoin' and 'secondaryjoin' expressions.
+ERROR 2022-01-08 20:39:39,528 views 16388 5692 'AssociationTable' object has no attribute 'foreign_keys'
+Traceback (most recent call last):
+  File "C:\Users\megol\Desktop\softlab\books\authors_books\views.py", line 29, in main
+    authors = s.query(Author).all()
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\orm\session.py", line 1544, in query
+    return self._query_cls(entities, self, **kwargs)
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\orm\query.py", line 168, in __init__
+    self._set_entities(entities)
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\orm\query.py", line 200, in _set_entities
+    self._set_entity_selectables(self._entities)
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\orm\query.py", line 231, in _set_entity_selectables
+    ent.setup_entity(*d[entity])
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\orm\query.py", line 4121, in setup_entity
+    self._with_polymorphic = ext_info.with_polymorphic_mappers
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\util\langhelpers.py", line 855, in __get__
+    obj.__dict__[self.__name__] = result = self.fget(obj)
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\orm\mapper.py", line 2135, in _with_polymorphic_mappers
+    configure_mappers()
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\orm\mapper.py", line 3248, in configure_mappers
+    mapper._post_configure_properties()
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\orm\mapper.py", line 1947, in _post_configure_properties
+    prop.init()
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\orm\interfaces.py", line 196, in init
+    self.do_init()
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\orm\relationships.py", line 1861, in do_init
+    self._setup_join_conditions()
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\orm\relationships.py", line 1925, in _setup_join_conditions
+    self._join_condition = jc = JoinCondition(
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\orm\relationships.py", line 2246, in __init__
+    self._determine_joins()
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\orm\relationships.py", line 2342, in _determine_joins
+    self.secondaryjoin = join_condition(
+  File "<string>", line 2, in join_condition
+  File "<string>", line 2, in _join_condition
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\util\deprecations.py", line 128, in warned
+    return fn(*args, **kwargs)
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\sql\selectable.py", line 927, in _join_condition
+    constraints = cls._joincond_scan_left_right(
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\sql\selectable.py", line 982, in _joincond_scan_left_right
+    b.foreign_keys, key=lambda fk: fk.parent._creation_order
+AttributeError: 'AssociationTable' object has no attribute 'foreign_keys'
+ERROR 2022-01-08 20:40:16,665 views 17044 16924 Could not determine join condition between parent/child tables on relationship Book.author - there are no foreign keys linking these tables via secondary table 'Association'.  Ensure that referencing columns are associated with a ForeignKey or ForeignKeyConstraint, or specify 'primaryjoin' and 'secondaryjoin' expressions.
+Traceback (most recent call last):
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\orm\relationships.py", line 2349, in _determine_joins
+    self.primaryjoin = join_condition(
+  File "<string>", line 2, in join_condition
+  File "<string>", line 2, in _join_condition
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\util\deprecations.py", line 128, in warned
+    return fn(*args, **kwargs)
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\sql\selectable.py", line 944, in _join_condition
+    raise exc.NoForeignKeysError(
+sqlalchemy.exc.NoForeignKeysError: Can't find any foreign key relationships between 'Books' and 'Association'.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\megol\Desktop\softlab\books\authors_books\views.py", line 29, in main
+    authors = s.query(Author).all()
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\orm\session.py", line 1544, in query
+    return self._query_cls(entities, self, **kwargs)
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\orm\query.py", line 168, in __init__
+    self._set_entities(entities)
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\orm\query.py", line 200, in _set_entities
+    self._set_entity_selectables(self._entities)
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\orm\query.py", line 231, in _set_entity_selectables
+    ent.setup_entity(*d[entity])
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\orm\query.py", line 4121, in setup_entity
+    self._with_polymorphic = ext_info.with_polymorphic_mappers
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\util\langhelpers.py", line 855, in __get__
+    obj.__dict__[self.__name__] = result = self.fget(obj)
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\orm\mapper.py", line 2135, in _with_polymorphic_mappers
+    configure_mappers()
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\orm\mapper.py", line 3248, in configure_mappers
+    mapper._post_configure_properties()
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\orm\mapper.py", line 1947, in _post_configure_properties
+    prop.init()
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\orm\interfaces.py", line 196, in init
+    self.do_init()
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\orm\relationships.py", line 1861, in do_init
+    self._setup_join_conditions()
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\orm\relationships.py", line 1925, in _setup_join_conditions
+    self._join_condition = jc = JoinCondition(
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\orm\relationships.py", line 2246, in __init__
+    self._determine_joins()
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\orm\relationships.py", line 2365, in _determine_joins
+    raise sa_exc.NoForeignKeysError(
+sqlalchemy.exc.NoForeignKeysError: Could not determine join condition between parent/child tables on relationship Book.author - there are no foreign keys linking these tables via secondary table 'Association'.  Ensure that referencing columns are associated with a ForeignKey or ForeignKeyConstraint, or specify 'primaryjoin' and 'secondaryjoin' expressions.
+ERROR 2022-01-09 14:02:21,843 views 10908 7104 'AssociationTable' object has no attribute 'foreign_keys'
+Traceback (most recent call last):
+  File "C:\Users\megol\Desktop\softlab\books\authors_books\views.py", line 29, in main
+    authors = s.query(Author).all()
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\orm\session.py", line 1544, in query
+    return self._query_cls(entities, self, **kwargs)
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\orm\query.py", line 168, in __init__
+    self._set_entities(entities)
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\orm\query.py", line 200, in _set_entities
+    self._set_entity_selectables(self._entities)
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\orm\query.py", line 231, in _set_entity_selectables
+    ent.setup_entity(*d[entity])
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\orm\query.py", line 4121, in setup_entity
+    self._with_polymorphic = ext_info.with_polymorphic_mappers
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\util\langhelpers.py", line 855, in __get__
+    obj.__dict__[self.__name__] = result = self.fget(obj)
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\orm\mapper.py", line 2135, in _with_polymorphic_mappers
+    configure_mappers()
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\orm\mapper.py", line 3248, in configure_mappers
+    mapper._post_configure_properties()
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\orm\mapper.py", line 1947, in _post_configure_properties
+    prop.init()
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\orm\interfaces.py", line 196, in init
+    self.do_init()
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\orm\relationships.py", line 1861, in do_init
+    self._setup_join_conditions()
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\orm\relationships.py", line 1925, in _setup_join_conditions
+    self._join_condition = jc = JoinCondition(
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\orm\relationships.py", line 2246, in __init__
+    self._determine_joins()
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\orm\relationships.py", line 2342, in _determine_joins
+    self.secondaryjoin = join_condition(
+  File "<string>", line 2, in join_condition
+  File "<string>", line 2, in _join_condition
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\util\deprecations.py", line 128, in warned
+    return fn(*args, **kwargs)
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\sql\selectable.py", line 927, in _join_condition
+    constraints = cls._joincond_scan_left_right(
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\sql\selectable.py", line 982, in _joincond_scan_left_right
+    b.foreign_keys, key=lambda fk: fk.parent._creation_order
+AttributeError: 'AssociationTable' object has no attribute 'foreign_keys'
+ERROR 2022-01-09 14:23:16,545 views 8544 9152 Could not determine join condition between parent/child tables on relationship Book.author - there are no foreign keys linking these tables via secondary table 'association'.  Ensure that referencing columns are associated with a ForeignKey or ForeignKeyConstraint, or specify 'primaryjoin' and 'secondaryjoin' expressions.
+Traceback (most recent call last):
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\orm\relationships.py", line 2342, in _determine_joins
+    self.secondaryjoin = join_condition(
+  File "<string>", line 2, in join_condition
+  File "<string>", line 2, in _join_condition
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\util\deprecations.py", line 128, in warned
+    return fn(*args, **kwargs)
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\sql\selectable.py", line 944, in _join_condition
+    raise exc.NoForeignKeysError(
+sqlalchemy.exc.NoForeignKeysError: Can't find any foreign key relationships between 'Authors' and 'association'.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\megol\Desktop\softlab\books\authors_books\views.py", line 29, in main
+    authors = s.query(Author).all()
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\orm\session.py", line 1544, in query
+    return self._query_cls(entities, self, **kwargs)
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\orm\query.py", line 168, in __init__
+    self._set_entities(entities)
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\orm\query.py", line 200, in _set_entities
+    self._set_entity_selectables(self._entities)
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\orm\query.py", line 231, in _set_entity_selectables
+    ent.setup_entity(*d[entity])
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\orm\query.py", line 4121, in setup_entity
+    self._with_polymorphic = ext_info.with_polymorphic_mappers
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\util\langhelpers.py", line 855, in __get__
+    obj.__dict__[self.__name__] = result = self.fget(obj)
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\orm\mapper.py", line 2135, in _with_polymorphic_mappers
+    configure_mappers()
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\orm\mapper.py", line 3248, in configure_mappers
+    mapper._post_configure_properties()
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\orm\mapper.py", line 1947, in _post_configure_properties
+    prop.init()
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\orm\interfaces.py", line 196, in init
+    self.do_init()
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\orm\relationships.py", line 1861, in do_init
+    self._setup_join_conditions()
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\orm\relationships.py", line 1925, in _setup_join_conditions
+    self._join_condition = jc = JoinCondition(
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\orm\relationships.py", line 2246, in __init__
+    self._determine_joins()
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\orm\relationships.py", line 2365, in _determine_joins
+    raise sa_exc.NoForeignKeysError(
+sqlalchemy.exc.NoForeignKeysError: Could not determine join condition between parent/child tables on relationship Book.author - there are no foreign keys linking these tables via secondary table 'association'.  Ensure that referencing columns are associated with a ForeignKey or ForeignKeyConstraint, or specify 'primaryjoin' and 'secondaryjoin' expressions.
+ERROR 2022-01-09 14:23:54,801 views 20760 17412 Could not determine join condition between parent/child tables on relationship Book.author - there are no foreign keys linking these tables via secondary table 'association'.  Ensure that referencing columns are associated with a ForeignKey or ForeignKeyConstraint, or specify 'primaryjoin' and 'secondaryjoin' expressions.
+Traceback (most recent call last):
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\orm\relationships.py", line 2342, in _determine_joins
+    self.secondaryjoin = join_condition(
+  File "<string>", line 2, in join_condition
+  File "<string>", line 2, in _join_condition
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\util\deprecations.py", line 128, in warned
+    return fn(*args, **kwargs)
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\sql\selectable.py", line 944, in _join_condition
+    raise exc.NoForeignKeysError(
+sqlalchemy.exc.NoForeignKeysError: Can't find any foreign key relationships between 'Authors' and 'association'.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\megol\Desktop\softlab\books\authors_books\views.py", line 29, in main
+    authors = s.query(Author).all()
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\orm\session.py", line 1544, in query
+    return self._query_cls(entities, self, **kwargs)
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\orm\query.py", line 168, in __init__
+    self._set_entities(entities)
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\orm\query.py", line 200, in _set_entities
+    self._set_entity_selectables(self._entities)
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\orm\query.py", line 231, in _set_entity_selectables
+    ent.setup_entity(*d[entity])
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\orm\query.py", line 4121, in setup_entity
+    self._with_polymorphic = ext_info.with_polymorphic_mappers
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\util\langhelpers.py", line 855, in __get__
+    obj.__dict__[self.__name__] = result = self.fget(obj)
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\orm\mapper.py", line 2135, in _with_polymorphic_mappers
+    configure_mappers()
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\orm\mapper.py", line 3248, in configure_mappers
+    mapper._post_configure_properties()
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\orm\mapper.py", line 1947, in _post_configure_properties
+    prop.init()
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\orm\interfaces.py", line 196, in init
+    self.do_init()
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\orm\relationships.py", line 1861, in do_init
+    self._setup_join_conditions()
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\orm\relationships.py", line 1925, in _setup_join_conditions
+    self._join_condition = jc = JoinCondition(
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\orm\relationships.py", line 2246, in __init__
+    self._determine_joins()
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\orm\relationships.py", line 2365, in _determine_joins
+    raise sa_exc.NoForeignKeysError(
+sqlalchemy.exc.NoForeignKeysError: Could not determine join condition between parent/child tables on relationship Book.author - there are no foreign keys linking these tables via secondary table 'association'.  Ensure that referencing columns are associated with a ForeignKey or ForeignKeyConstraint, or specify 'primaryjoin' and 'secondaryjoin' expressions.
+ERROR 2022-01-09 14:24:53,611 views 2884 18792 Mapper 'mapped class Author->Authors' has no property 'books'
+Traceback (most recent call last):
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\orm\mapper.py", line 2043, in get_property
+    return self._props[key]
+KeyError: 'books'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\megol\Desktop\softlab\books\authors_books\views.py", line 29, in main
+    authors = s.query(Author).all()
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\orm\session.py", line 1544, in query
+    return self._query_cls(entities, self, **kwargs)
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\orm\query.py", line 168, in __init__
+    self._set_entities(entities)
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\orm\query.py", line 200, in _set_entities
+    self._set_entity_selectables(self._entities)
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\orm\query.py", line 231, in _set_entity_selectables
+    ent.setup_entity(*d[entity])
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\orm\query.py", line 4121, in setup_entity
+    self._with_polymorphic = ext_info.with_polymorphic_mappers
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\util\langhelpers.py", line 855, in __get__
+    obj.__dict__[self.__name__] = result = self.fget(obj)
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\orm\mapper.py", line 2135, in _with_polymorphic_mappers
+    configure_mappers()
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\orm\mapper.py", line 3248, in configure_mappers
+    mapper._post_configure_properties()
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\orm\mapper.py", line 1947, in _post_configure_properties
+    prop.init()
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\orm\interfaces.py", line 196, in init
+    self.do_init()
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\orm\relationships.py", line 1864, in do_init
+    self._generate_backref()
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\orm\relationships.py", line 2124, in _generate_backref
+    self._add_reverse_property(self.back_populates)
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\orm\relationships.py", line 1795, in _add_reverse_property
+    other = self.mapper.get_property(key, _configure_mappers=False)
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\orm\mapper.py", line 2045, in get_property
+    raise sa_exc.InvalidRequestError(
+sqlalchemy.exc.InvalidRequestError: Mapper 'mapped class Author->Authors' has no property 'books'
+ERROR 2022-01-09 14:25:22,708 views 2884 18792 One or more mappers failed to initialize - can't proceed with initialization of other mappers. Triggering mapper: 'mapped class Book->Books'. Original exception was: Mapper 'mapped class Author->Authors' has no property 'books'
+Traceback (most recent call last):
+  File "C:\Users\megol\Desktop\softlab\books\authors_books\views.py", line 29, in main
+    authors = s.query(Author).all()
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\orm\session.py", line 1544, in query
+    return self._query_cls(entities, self, **kwargs)
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\orm\query.py", line 168, in __init__
+    self._set_entities(entities)
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\orm\query.py", line 200, in _set_entities
+    self._set_entity_selectables(self._entities)
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\orm\query.py", line 231, in _set_entity_selectables
+    ent.setup_entity(*d[entity])
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\orm\query.py", line 4121, in setup_entity
+    self._with_polymorphic = ext_info.with_polymorphic_mappers
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\util\langhelpers.py", line 855, in __get__
+    obj.__dict__[self.__name__] = result = self.fget(obj)
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\orm\mapper.py", line 2135, in _with_polymorphic_mappers
+    configure_mappers()
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\orm\mapper.py", line 3244, in configure_mappers
+    raise e
+sqlalchemy.exc.InvalidRequestError: One or more mappers failed to initialize - can't proceed with initialization of other mappers. Triggering mapper: 'mapped class Book->Books'. Original exception was: Mapper 'mapped class Author->Authors' has no property 'books'
+ERROR 2022-01-09 14:25:25,749 views 13084 17476 Could not determine join condition between parent/child tables on relationship Book.author - there are no foreign keys linking these tables via secondary table 'association'.  Ensure that referencing columns are associated with a ForeignKey or ForeignKeyConstraint, or specify 'primaryjoin' and 'secondaryjoin' expressions.
+Traceback (most recent call last):
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\orm\relationships.py", line 2342, in _determine_joins
+    self.secondaryjoin = join_condition(
+  File "<string>", line 2, in join_condition
+  File "<string>", line 2, in _join_condition
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\util\deprecations.py", line 128, in warned
+    return fn(*args, **kwargs)
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\sql\selectable.py", line 944, in _join_condition
+    raise exc.NoForeignKeysError(
+sqlalchemy.exc.NoForeignKeysError: Can't find any foreign key relationships between 'Authors' and 'association'.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\megol\Desktop\softlab\books\authors_books\views.py", line 29, in main
+    authors = s.query(Author).all()
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\orm\session.py", line 1544, in query
+    return self._query_cls(entities, self, **kwargs)
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\orm\query.py", line 168, in __init__
+    self._set_entities(entities)
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\orm\query.py", line 200, in _set_entities
+    self._set_entity_selectables(self._entities)
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\orm\query.py", line 231, in _set_entity_selectables
+    ent.setup_entity(*d[entity])
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\orm\query.py", line 4121, in setup_entity
+    self._with_polymorphic = ext_info.with_polymorphic_mappers
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\util\langhelpers.py", line 855, in __get__
+    obj.__dict__[self.__name__] = result = self.fget(obj)
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\orm\mapper.py", line 2135, in _with_polymorphic_mappers
+    configure_mappers()
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\orm\mapper.py", line 3248, in configure_mappers
+    mapper._post_configure_properties()
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\orm\mapper.py", line 1947, in _post_configure_properties
+    prop.init()
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\orm\interfaces.py", line 196, in init
+    self.do_init()
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\orm\relationships.py", line 1861, in do_init
+    self._setup_join_conditions()
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\orm\relationships.py", line 1925, in _setup_join_conditions
+    self._join_condition = jc = JoinCondition(
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\orm\relationships.py", line 2246, in __init__
+    self._determine_joins()
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\orm\relationships.py", line 2365, in _determine_joins
+    raise sa_exc.NoForeignKeysError(
+sqlalchemy.exc.NoForeignKeysError: Could not determine join condition between parent/child tables on relationship Book.author - there are no foreign keys linking these tables via secondary table 'association'.  Ensure that referencing columns are associated with a ForeignKey or ForeignKeyConstraint, or specify 'primaryjoin' and 'secondaryjoin' expressions.
+ERROR 2022-01-09 14:25:33,503 views 13084 17476 One or more mappers failed to initialize - can't proceed with initialization of other mappers. Triggering mapper: 'mapped class Book->Books'. Original exception was: Could not determine join condition between parent/child tables on relationship Book.author - there are no foreign keys linking these tables via secondary table 'association'.  Ensure that referencing columns are associated with a ForeignKey or ForeignKeyConstraint, or specify 'primaryjoin' and 'secondaryjoin' expressions.
+Traceback (most recent call last):
+  File "C:\Users\megol\Desktop\softlab\books\authors_books\views.py", line 29, in main
+    authors = s.query(Author).all()
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\orm\session.py", line 1544, in query
+    return self._query_cls(entities, self, **kwargs)
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\orm\query.py", line 168, in __init__
+    self._set_entities(entities)
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\orm\query.py", line 200, in _set_entities
+    self._set_entity_selectables(self._entities)
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\orm\query.py", line 231, in _set_entity_selectables
+    ent.setup_entity(*d[entity])
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\orm\query.py", line 4121, in setup_entity
+    self._with_polymorphic = ext_info.with_polymorphic_mappers
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\util\langhelpers.py", line 855, in __get__
+    obj.__dict__[self.__name__] = result = self.fget(obj)
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\orm\mapper.py", line 2135, in _with_polymorphic_mappers
+    configure_mappers()
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\orm\mapper.py", line 3244, in configure_mappers
+    raise e
+sqlalchemy.exc.InvalidRequestError: One or more mappers failed to initialize - can't proceed with initialization of other mappers. Triggering mapper: 'mapped class Book->Books'. Original exception was: Could not determine join condition between parent/child tables on relationship Book.author - there are no foreign keys linking these tables via secondary table 'association'.  Ensure that referencing columns are associated with a ForeignKey or ForeignKeyConstraint, or specify 'primaryjoin' and 'secondaryjoin' expressions.
+ERROR 2022-01-09 14:25:37,366 views 13616 3724 Mapper 'mapped class Author->Authors' has no property 'books'
+Traceback (most recent call last):
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\orm\mapper.py", line 2043, in get_property
+    return self._props[key]
+KeyError: 'books'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\megol\Desktop\softlab\books\authors_books\views.py", line 29, in main
+    authors = s.query(Author).all()
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\orm\session.py", line 1544, in query
+    return self._query_cls(entities, self, **kwargs)
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\orm\query.py", line 168, in __init__
+    self._set_entities(entities)
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\orm\query.py", line 200, in _set_entities
+    self._set_entity_selectables(self._entities)
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\orm\query.py", line 231, in _set_entity_selectables
+    ent.setup_entity(*d[entity])
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\orm\query.py", line 4121, in setup_entity
+    self._with_polymorphic = ext_info.with_polymorphic_mappers
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\util\langhelpers.py", line 855, in __get__
+    obj.__dict__[self.__name__] = result = self.fget(obj)
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\orm\mapper.py", line 2135, in _with_polymorphic_mappers
+    configure_mappers()
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\orm\mapper.py", line 3248, in configure_mappers
+    mapper._post_configure_properties()
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\orm\mapper.py", line 1947, in _post_configure_properties
+    prop.init()
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\orm\interfaces.py", line 196, in init
+    self.do_init()
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\orm\relationships.py", line 1864, in do_init
+    self._generate_backref()
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\orm\relationships.py", line 2124, in _generate_backref
+    self._add_reverse_property(self.back_populates)
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\orm\relationships.py", line 1795, in _add_reverse_property
+    other = self.mapper.get_property(key, _configure_mappers=False)
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\orm\mapper.py", line 2045, in get_property
+    raise sa_exc.InvalidRequestError(
+sqlalchemy.exc.InvalidRequestError: Mapper 'mapped class Author->Authors' has no property 'books'
+ERROR 2022-01-09 14:26:55,814 views 6652 17132 (sqlite3.OperationalError) no such column: association_1.book_id
+[SQL: SELECT count("Books".title) AS count_1 
+FROM "Books" GROUP BY "Books".id_book = association_1.book_id AND "Authors".id_author = association_1.author_id]
+(Background on this error at: http://sqlalche.me/e/e3q8)
+Traceback (most recent call last):
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\engine\base.py", line 1248, in _execute_context
+    self.dialect.do_execute(
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\engine\default.py", line 580, in do_execute
+    cursor.execute(statement, parameters)
+sqlite3.OperationalError: no such column: association_1.book_id
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\megol\Desktop\softlab\books\authors_books\views.py", line 30, in main
+    rows = s.query(func.count(Book.title)).group_by(Book.author).all()
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\orm\query.py", line 3186, in all
+    return list(self)
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\orm\query.py", line 3342, in __iter__
+    return self._execute_and_instances(context)
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\orm\query.py", line 3367, in _execute_and_instances
+    result = conn.execute(querycontext.statement, self._params)
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\engine\base.py", line 988, in execute
+    return meth(self, multiparams, params)
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\sql\elements.py", line 287, in _execute_on_connection
+    return connection._execute_clauseelement(self, multiparams, params)
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\engine\base.py", line 1101, in _execute_clauseelement
+    ret = self._execute_context(
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\engine\base.py", line 1252, in _execute_context
+    self._handle_dbapi_exception(
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\engine\base.py", line 1473, in _handle_dbapi_exception
+    util.raise_from_cause(sqlalchemy_exception, exc_info)
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\util\compat.py", line 398, in raise_from_cause
+    reraise(type(exception), exception, tb=exc_tb, cause=cause)
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\util\compat.py", line 152, in reraise
+    raise value.with_traceback(tb)
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\engine\base.py", line 1248, in _execute_context
+    self.dialect.do_execute(
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\engine\default.py", line 580, in do_execute
+    cursor.execute(statement, parameters)
+sqlalchemy.exc.OperationalError: (sqlite3.OperationalError) no such column: association_1.book_id
+[SQL: SELECT count("Books".title) AS count_1 
+FROM "Books" GROUP BY "Books".id_book = association_1.book_id AND "Authors".id_author = association_1.author_id]
+(Background on this error at: http://sqlalche.me/e/e3q8)
+ERROR 2022-01-09 15:13:38,134 views 5016 13668 (sqlite3.OperationalError) no such column: association_1.book_id
+[SQL: SELECT count("Books".title) AS count_1 
+FROM "Books" GROUP BY "Books".id_book = association_1.book_id AND "Authors".id_author = association_1.author_id]
+(Background on this error at: http://sqlalche.me/e/e3q8)
+Traceback (most recent call last):
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\engine\base.py", line 1248, in _execute_context
+    self.dialect.do_execute(
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\engine\default.py", line 580, in do_execute
+    cursor.execute(statement, parameters)
+sqlite3.OperationalError: no such column: association_1.book_id
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\megol\Desktop\softlab\books\authors_books\views.py", line 30, in main
+    rows = s.query(func.count(Book.title)).group_by(Book.author).all()
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\orm\query.py", line 3186, in all
+    return list(self)
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\orm\query.py", line 3342, in __iter__
+    return self._execute_and_instances(context)
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\orm\query.py", line 3367, in _execute_and_instances
+    result = conn.execute(querycontext.statement, self._params)
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\engine\base.py", line 988, in execute
+    return meth(self, multiparams, params)
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\sql\elements.py", line 287, in _execute_on_connection
+    return connection._execute_clauseelement(self, multiparams, params)
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\engine\base.py", line 1101, in _execute_clauseelement
+    ret = self._execute_context(
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\engine\base.py", line 1252, in _execute_context
+    self._handle_dbapi_exception(
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\engine\base.py", line 1473, in _handle_dbapi_exception
+    util.raise_from_cause(sqlalchemy_exception, exc_info)
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\util\compat.py", line 398, in raise_from_cause
+    reraise(type(exception), exception, tb=exc_tb, cause=cause)
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\util\compat.py", line 152, in reraise
+    raise value.with_traceback(tb)
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\engine\base.py", line 1248, in _execute_context
+    self.dialect.do_execute(
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\engine\default.py", line 580, in do_execute
+    cursor.execute(statement, parameters)
+sqlalchemy.exc.OperationalError: (sqlite3.OperationalError) no such column: association_1.book_id
+[SQL: SELECT count("Books".title) AS count_1 
+FROM "Books" GROUP BY "Books".id_book = association_1.book_id AND "Authors".id_author = association_1.author_id]
+(Background on this error at: http://sqlalche.me/e/e3q8)

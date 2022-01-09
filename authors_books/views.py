@@ -17,7 +17,7 @@ from django.contrib.auth.decorators import login_required
 
 logger = logging.getLogger(__name__)
 
-engine = create_engine('sqlite:///../../Classed_db.sqlite3', echo=True)
+engine = create_engine('sqlite:///../Classed_db.sqlite3', echo=True)
 
 
 def main(request):
@@ -27,13 +27,13 @@ def main(request):
 
     try:
         authors = s.query(Author).all()
-        rows = s.query(func.count(Book.title)).group_by(Book.author_id).all()
+        rows = s.query(func.count(Book.title)).group_by(Book.author).all()
         counters = list()
         for row in rows:
             counters.append(row[0])
         logger.info('client requests main screen')
     except Exception as ex:
-        problem_check = 1
+
         logger.error(ex, exc_info=True)
         s.rollback()
         return HttpResponse(status=500, content=RESP_MSG_INTERNAL_ERROR)
@@ -46,36 +46,36 @@ def main(request):
 
 
 def book_list(request, pk):
+    pass
+#     session = sessionmaker(bind=engine)
+#     s = session()
+#     try:
+#         titles = s.query(Book).filter(Book.author_id == pk).all()
+#         authors = s.query(Author).filter(Author.id_author == pk).all()
+#         logger.info('client requests title_list')
+#     except Exception as ex:
+#         logger.error(ex, exc_info=True)
+#         s.rollback()
+#         return HttpResponse(status=500, content=RESP_MSG_INTERNAL_ERROR)
+#     finally:
+#         s.close()
+#
+#     form = NewBookForm()
+#     form.fields['author_id'].initial = pk
+#     if request.method == 'POST':
+#         form = NewBookForm(request.POST)
+#         try:
+#             add_new_book_to_db(form, request)
+#             return redirect(request.META['HTTP_REFERER'])
+#         except:
+#             return HttpResponse(status=500, content="Internal Server Error")
+#
+#
+#     context = {'titles': titles, 'authors': authors, 'form': form}
+#     return render(request, 'book_list.html', context)
 
-    session = sessionmaker(bind=engine)
-    s = session()
-    try:
-        titles = s.query(Book).filter(Book.author_id == pk).all()
-        authors = s.query(Author).filter(Author.id_author == pk).all()
-        logger.info('client requests title_list')
-    except Exception as ex:
-        logger.error(ex, exc_info=True)
-        s.rollback()
-        return HttpResponse(status=500, content=RESP_MSG_INTERNAL_ERROR)
-    finally:
-        s.close()
 
-    form = NewBookForm()
-    form.fields['author_id'].initial = pk
-    if request.method == 'POST':
-        form = NewBookForm(request.POST)
-        try:
-            add_new_book_to_db(form, request)
-            return redirect(request.META['HTTP_REFERER'])
-        except:
-            return HttpResponse(status=500, content="Internal Server Error")
-
-
-    context = {'titles': titles, 'authors': authors, 'form': form}
-    return render(request, 'book_list.html', context)
-
-
-def registerPage(request):
+def register_page(request):
     if request.user.is_authenticated:
         return redirect('author_list')
     else:
@@ -93,7 +93,7 @@ def registerPage(request):
         return render(request, 'register.html', context)
 
 
-def loginPage(request):
+def login_page(request):
     if request.user.is_authenticated:
         return redirect('author_list')
     else:
@@ -113,6 +113,6 @@ def loginPage(request):
         return render(request, 'login.html', context)
 
 
-def logoutUser(request):
+def logout_user(request):
     logout(request)
     return redirect('login')
