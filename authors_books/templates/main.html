@@ -8,6 +8,13 @@
 <body>
 <a href="{% url 'logout' %}">Logout</a>
 <h3>Hello {{ request.user }}</h3>
+ <div>
+        <form method="POST" action="">
+            {% csrf_token %}
+            {{ filtering }}
+            <input  type="submit">
+        </form>
+    </div>
 <div class = 'container'>
     <div class="row">
         <div class="col-2">

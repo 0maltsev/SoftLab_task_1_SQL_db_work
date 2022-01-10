@@ -53,8 +53,11 @@ def add_new_book_to_db(form, request):
         try:
             author_id = form.cleaned_data['author_id']
             title = form.cleaned_data['title']
+            writer = s.query(Author).filter(Author.id_author == author_id).all()[0]
 
-            s.add_all([Book(author_id=author_id, title=title)])
+            new_book = Book(title=title)
+            writer.book.append(new_book)
+            s.add_all([new_book])
             s.commit()
             logger.info('client adds new book to title_list')
         except Exception as ex:

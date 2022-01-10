@@ -25,9 +25,11 @@ def main(request):
     session = sessionmaker(bind=engine)
     s = session()
 
+    idents = list()
+    writers = list()
     try:
         authors = s.query(Author).all()
-        rows = s.query(func.count(Book.title)).group_by(Book.author).all()
+        rows = s.query(func.count(association_table.c.book_id)).group_by(association_table.c.author_id).all()
         counters = list()
         for row in rows:
             counters.append(row[0])
@@ -40,39 +42,82 @@ def main(request):
     finally:
         s.close()
 
-    context = {'authors': authors, 'counters': counters}
+    filtering = AmountFilter()
+    if request.method == 'POST':
+        filtering = AmountFilter(request.POST)
+
+        if filtering.is_valid():
+            amount = filtering.cleaned_data['title_amount']
+            writers_idents = s.query(association_table.c.author_id).group_by(
+                association_table.c.author_id).having(func.count(association_table.c.book_id) >= amount)
+            for element in writers_idents:
+                idents.append(element[0])
+            for element in idents:
+                writers.append(s.query(Author.name).filter(Author.id_author == element).all()[0][0])
+            s.close()
+
+        context = {'writers': writers}
+        return render(request, 'filtered_authors.html', context)
+
+    context = {'authors': authors, 'counters': counters, 'filtering': filtering}
     return render(request, 'main.html', context)
 
 
 
 def book_list(request, pk):
-    pass
-#     session = sessionmaker(bind=engine)
-#     s = session()
-#     try:
-#         titles = s.query(Book).filter(Book.author_id == pk).all()
-#         authors = s.query(Author).filter(Author.id_author == pk).all()
-#         logger.info('client requests title_list')
-#     except Exception as ex:
-#         logger.error(ex, exc_info=True)
-#         s.rollback()
-#         return HttpResponse(status=500, content=RESP_MSG_INTERNAL_ERROR)
-#     finally:
-#         s.close()
-#
-#     form = NewBookForm()
-#     form.fields['author_id'].initial = pk
-#     if request.method == 'POST':
-#         form = NewBookForm(request.POST)
-#         try:
-#             add_new_book_to_db(form, request)
-#             return redirect(request.META['HTTP_REFERER'])
-#         except:
-#             return HttpResponse(status=500, content="Internal Server Error")
-#
-#
-#     context = {'titles': titles, 'authors': authors, 'form': form}
-#     return render(request, 'book_list.html', context)
+
+    session = sessionmaker(bind=engine)
+    s = session()
+    try:
+        book_ids = s.query(association_table.c.book_id).filter(association_table.c.author_id == pk).all()
+        titles = list()
+        for element in book_ids:
+            titles.append(s.query(Book).filter(Book.id_book == element[0]).all()[0])
+
+        authors = s.query(Author).filter(Author.id_author == pk).all()
+        logger.info('client requests title_list')
+    except Exception as ex:
+        logger.error(ex, exc_info=True)
+        s.rollback()
+        return HttpResponse(status=500, content=RESP_MSG_INTERNAL_ERROR)
+    finally:
+        s.close()
+
+    form = NewBookForm()
+    form.fields['author_id'].initial = pk
+    if request.method == 'POST':
+        form = NewBookForm(request.POST)
+        try:
+            if form.is_valid():
+                try:
+                    author_id = form.cleaned_data['author_id']
+                    title = form.cleaned_data['title']
+                    writer = s.query(Author).filter(Author.id_author == author_id).all()[0]
+                    new_book = Book(title=title)
+                    writer.book.append(new_book)
+                    s.add_all([new_book])
+                    s.commit()
+                    logger.info('client adds new book to title_list')
+                except Exception as ex:
+                    logger.error(ex, exc_info=True)
+                    s.rollback()
+                    raise ex
+                finally:
+                    s.close()
+            return redirect(request.META['HTTP_REFERER'])
+        except:
+            return HttpResponse(status=500, content="Internal Server Error")
+
+    context = {'titles': titles, 'authors': authors, 'form': form}
+    return render(request, 'book_list.html', context)
+
+
+
+
+
+
+
+
 
 
 def register_page(request):

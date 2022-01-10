@@ -792,3 +792,109 @@ sqlalchemy.exc.OperationalError: (sqlite3.OperationalError) no such column: asso
 [SQL: SELECT count("Books".title) AS count_1 
 FROM "Books" GROUP BY "Books".id_book = association_1.book_id AND "Authors".id_author = association_1.author_id]
 (Background on this error at: http://sqlalche.me/e/e3q8)
+ERROR 2022-01-10 02:15:44,671 return_functions 2212 21996 'list' object has no attribute 'book'
+Traceback (most recent call last):
+  File "C:\Users\megol\Desktop\softlab\books\authors_books\data_base_alchemy\return_functions.py", line 58, in add_new_book_to_db
+    writer.book.append(new_book)
+AttributeError: 'list' object has no attribute 'book'
+ERROR 2022-01-10 02:25:29,149 return_functions 11808 22176 'Author' object is not subscriptable
+Traceback (most recent call last):
+  File "C:\Users\megol\Desktop\softlab\books\authors_books\data_base_alchemy\return_functions.py", line 59, in add_new_book_to_db
+    writer[0].book.append(new_book)
+TypeError: 'Author' object is not subscriptable
+ERROR 2022-01-10 03:00:06,530 views 6240 20740 (sqlite3.InterfaceError) Error binding parameter 0 - probably unsupported type.
+[SQL: SELECT "Books".id_book AS "Books_id_book", "Books".title AS "Books_title" 
+FROM "Books" 
+WHERE "Books".id_book = ?]
+[parameters: ((1,))]
+(Background on this error at: http://sqlalche.me/e/rvf5)
+Traceback (most recent call last):
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\engine\base.py", line 1248, in _execute_context
+    self.dialect.do_execute(
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\engine\default.py", line 580, in do_execute
+    cursor.execute(statement, parameters)
+sqlite3.InterfaceError: Error binding parameter 0 - probably unsupported type.
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\megol\Desktop\softlab\books\authors_books\views.py", line 55, in book_list
+    titles = s.query(Book).filter(Book.id_book == element).all()
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\orm\query.py", line 3186, in all
+    return list(self)
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\orm\query.py", line 3342, in __iter__
+    return self._execute_and_instances(context)
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\orm\query.py", line 3367, in _execute_and_instances
+    result = conn.execute(querycontext.statement, self._params)
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\engine\base.py", line 988, in execute
+    return meth(self, multiparams, params)
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\sql\elements.py", line 287, in _execute_on_connection
+    return connection._execute_clauseelement(self, multiparams, params)
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\engine\base.py", line 1101, in _execute_clauseelement
+    ret = self._execute_context(
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\engine\base.py", line 1252, in _execute_context
+    self._handle_dbapi_exception(
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\engine\base.py", line 1473, in _handle_dbapi_exception
+    util.raise_from_cause(sqlalchemy_exception, exc_info)
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\util\compat.py", line 398, in raise_from_cause
+    reraise(type(exception), exception, tb=exc_tb, cause=cause)
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\util\compat.py", line 152, in reraise
+    raise value.with_traceback(tb)
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\engine\base.py", line 1248, in _execute_context
+    self.dialect.do_execute(
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\engine\default.py", line 580, in do_execute
+    cursor.execute(statement, parameters)
+sqlalchemy.exc.InterfaceError: (sqlite3.InterfaceError) Error binding parameter 0 - probably unsupported type.
+[SQL: SELECT "Books".id_book AS "Books_id_book", "Books".title AS "Books_title" 
+FROM "Books" 
+WHERE "Books".id_book = ?]
+[parameters: ((1,))]
+(Background on this error at: http://sqlalche.me/e/rvf5)
+ERROR 2022-01-10 03:00:20,940 views 6240 20740 (sqlite3.InterfaceError) Error binding parameter 0 - probably unsupported type.
+[SQL: SELECT "Books".id_book AS "Books_id_book", "Books".title AS "Books_title" 
+FROM "Books" 
+WHERE "Books".id_book = ?]
+[parameters: ((1,))]
+(Background on this error at: http://sqlalche.me/e/rvf5)
+Traceback (most recent call last):
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\engine\base.py", line 1248, in _execute_context
+    self.dialect.do_execute(
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\engine\default.py", line 580, in do_execute
+    cursor.execute(statement, parameters)
+sqlite3.InterfaceError: Error binding parameter 0 - probably unsupported type.
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\megol\Desktop\softlab\books\authors_books\views.py", line 55, in book_list
+    titles = s.query(Book).filter(Book.id_book == element[0]).all()
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\orm\query.py", line 3186, in all
+    return list(self)
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\orm\query.py", line 3342, in __iter__
+    return self._execute_and_instances(context)
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\orm\query.py", line 3367, in _execute_and_instances
+    result = conn.execute(querycontext.statement, self._params)
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\engine\base.py", line 988, in execute
+    return meth(self, multiparams, params)
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\sql\elements.py", line 287, in _execute_on_connection
+    return connection._execute_clauseelement(self, multiparams, params)
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\engine\base.py", line 1101, in _execute_clauseelement
+    ret = self._execute_context(
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\engine\base.py", line 1252, in _execute_context
+    self._handle_dbapi_exception(
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\engine\base.py", line 1473, in _handle_dbapi_exception
+    util.raise_from_cause(sqlalchemy_exception, exc_info)
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\util\compat.py", line 398, in raise_from_cause
+    reraise(type(exception), exception, tb=exc_tb, cause=cause)
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\util\compat.py", line 152, in reraise
+    raise value.with_traceback(tb)
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\engine\base.py", line 1248, in _execute_context
+    self.dialect.do_execute(
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\engine\default.py", line 580, in do_execute
+    cursor.execute(statement, parameters)
+sqlalchemy.exc.InterfaceError: (sqlite3.InterfaceError) Error binding parameter 0 - probably unsupported type.
+[SQL: SELECT "Books".id_book AS "Books_id_book", "Books".title AS "Books_title" 
+FROM "Books" 
+WHERE "Books".id_book = ?]
+[parameters: ((1,))]
+(Background on this error at: http://sqlalche.me/e/rvf5)
