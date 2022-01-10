@@ -27,6 +27,8 @@ def main(request):
 
     idents = list()
     writers = list()
+    filtered_counters = list()
+    filtered_authors = list()
     try:
         authors = s.query(Author).all()
         rows = s.query(func.count(association_table.c.book_id)).group_by(association_table.c.author_id).all()
@@ -42,12 +44,12 @@ def main(request):
     finally:
         s.close()
 
-    filtering = AmountFilter()
+    amount_filtering = AmountFilter()
     if request.method == 'POST':
-        filtering = AmountFilter(request.POST)
+        amount_filtering = AmountFilter(request.POST)
 
-        if filtering.is_valid():
-            amount = filtering.cleaned_data['title_amount']
+        if amount_filtering.is_valid():
+            amount = amount_filtering.cleaned_data['title_amount']
             writers_idents = s.query(association_table.c.author_id).group_by(
                 association_table.c.author_id).having(func.count(association_table.c.book_id) >= amount)
             for element in writers_idents:
@@ -59,7 +61,25 @@ def main(request):
         context = {'writers': writers}
         return render(request, 'filtered_authors.html', context)
 
-    context = {'authors': authors, 'counters': counters, 'filtering': filtering}
+    substring_filtering = SubstringFilter()
+    if request.method == 'POST':
+        substring_filtering = SubstringFilter(request.POST)
+
+        if substring_filtering.is_valid():
+            substring = substring_filtering.cleaned_data['substring']
+            filtered_authors = s.query(Author).all()
+            filtered_rows = s.query(func.count(association_table.c.book_id)).group_by(association_table.c.author_id).all()
+
+            for row in rows:
+                filtered_counters.append(row[0])
+            s.close()
+
+        context = {'authors': filtered_authors, 'counters': filtered_counters, 'amount_filtering': amount_filtering,
+                   'substring_filtering': substring_filtering}
+        return render(request, 'main.html', context)
+
+
+    context = {'authors': authors, 'counters': counters, 'amount_filtering': amount_filtering, 'substring_filtering': substring_filtering}
     return render(request, 'main.html', context)
 
 
