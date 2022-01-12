@@ -73,8 +73,7 @@ def main(request):
             context = {'writers': writers}
             return render(request, 'filtered_authors.html', context)
 
-
-        else:
+        elif "substring" in request.POST:
             substring_filtering = SubstringFilter(request.POST)
             try:
                 if substring_filtering.is_valid():
