@@ -16,5 +16,6 @@ class CreateUserForm(UserCreationForm):
 class AmountFilter(forms.Form):
     title_amount = forms.IntegerField()
 
+
 class SubstringFilter(forms.Form):
     substring = forms.CharField(max_length=100)

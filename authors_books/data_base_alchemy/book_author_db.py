@@ -42,7 +42,6 @@ Base.metadata.create_all(engine)
 session = sessionmaker(bind=engine)
 s = session()
 
-#print(s.query(func.count(Book.title)).filter(Book.title.contains('a')).group_by(association_table.c.author_id).all())
 
 
 

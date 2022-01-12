@@ -45,38 +45,39 @@ def main(request):
         s.close()
 
     amount_filtering = AmountFilter()
-    if request.method == 'POST':
-        amount_filtering = AmountFilter(request.POST)
-
-        if amount_filtering.is_valid():
-            amount = amount_filtering.cleaned_data['title_amount']
-            writers_idents = s.query(association_table.c.author_id).group_by(
-                association_table.c.author_id).having(func.count(association_table.c.book_id) >= amount)
-            for element in writers_idents:
-                idents.append(element[0])
-            for element in idents:
-                writers.append(s.query(Author.name).filter(Author.id_author == element).all()[0][0])
-            s.close()
-
-        context = {'writers': writers}
-        return render(request, 'filtered_authors.html', context)
-
     substring_filtering = SubstringFilter()
     if request.method == 'POST':
-        substring_filtering = SubstringFilter(request.POST)
+        if "amount" in request.POST:
+            amount_filtering = AmountFilter(request.POST)
 
-        if substring_filtering.is_valid():
-            substring = substring_filtering.cleaned_data['substring']
-            filtered_authors = s.query(Author).all()
-            filtered_rows = s.query(func.count(association_table.c.book_id)).group_by(association_table.c.author_id).all()
+            if amount_filtering.is_valid():
+                amount = amount_filtering.cleaned_data['title_amount']
+                writers_idents = s.query(association_table.c.author_id).group_by(
+                    association_table.c.author_id).having(func.count(association_table.c.book_id) >= amount)
+                for element in writers_idents:
+                    idents.append(element[0])
+                for element in idents:
+                    writers.append(s.query(Author.name).filter(Author.id_author == element).all()[0][0])
+                s.close()
 
-            for row in rows:
-                filtered_counters.append(row[0])
-            s.close()
+            context = {'writers': writers}
+            return render(request, 'filtered_authors.html', context)
 
-        context = {'authors': filtered_authors, 'counters': filtered_counters, 'amount_filtering': amount_filtering,
-                   'substring_filtering': substring_filtering}
-        return render(request, 'main.html', context)
+        else:
+            substring_filtering = SubstringFilter(request.POST)
+
+            if substring_filtering.is_valid():
+                substring = substring_filtering.cleaned_data.get('substring')
+                filtered_authors = s.query(Author).all()
+                filtered_rows = s.query(Book, association_table, func.count(association_table.c.book_id)).join(Book, Book.id_book == association_table.c.book_id).filter(Book.title.contains(substring)).group_by(association_table.c.author_id).all()
+                for row in filtered_rows:
+                    filtered_counters.append(row[3])
+                s.close()
+                print(substring)
+
+            context = {'authors': filtered_authors, 'counters': filtered_counters, 'amount_filtering': amount_filtering,
+                       'substring_filtering': substring_filtering}
+            return render(request, 'main.html', context)
 
 
     context = {'authors': authors, 'counters': counters, 'amount_filtering': amount_filtering, 'substring_filtering': substring_filtering}

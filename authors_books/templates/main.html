@@ -8,10 +8,17 @@
 <body>
 <a href="{% url 'logout' %}">Logout</a>
 <h3>Hello {{ request.user }}</h3>
- <div>
+<div>
+    <form method="POST" action="">
+        {% csrf_token %}
+        {{ amount_filtering }}
+        <input  type="submit" name="amount">
+    </form>
+</div>
+<div>
         <form method="POST" action="">
             {% csrf_token %}
-            {{ amount_filtering }}
+            {{ substring_filtering }}
             <input  type="submit">
         </form>
     </div>
