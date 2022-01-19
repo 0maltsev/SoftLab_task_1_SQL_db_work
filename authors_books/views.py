@@ -47,62 +47,71 @@ def main(request):
     finally:
         s.close()
 
-    amount_filtering = AmountFilter()
-    substring_filtering = SubstringFilter()
+
+    filtering = Filter()
 
     if request.method == 'POST':
-        if "amount" in request.POST:
-            amount_filtering = AmountFilter(request.POST)
-            try:
-                if amount_filtering.is_valid():
-                    try:
-                        amount = amount_filtering.cleaned_data['title_amount']
-                        writers_idents = s.query(association_table.c.author_id).group_by(
-                            association_table.c.author_id).having(book_id_counter >= amount)
-                        for element in writers_idents:
-                            idents.append(element[0])
-                        for element in idents:
-                            writers.append(authors_query.filter(Author.id_author == element).first().name)
-                    except Exception as ex:
-                        logger.error(ex, exc_info=True)
-                        s.rollback()
-                        raise ex
-                    finally:
-                        s.close()
 
-            except:
-                return HttpResponse(status=500, content="Internal Server Error")
+        filtering = Filter(request.POST)
+        try:
+            if filtering.is_valid():
+                try:
+                    amount = filtering.cleaned_data['title_amount']
+                    substring = filtering.cleaned_data.get('substring')
 
-            context = {'writers': writers}
-            return render(request, 'filtered_authors.html', context)
+                    if substring == '':
+                        try:
+                            writers_idents = s.query(association_table.c.author_id).group_by(
+                                association_table.c.author_id).having(book_id_counter >= amount)
+                            for element in writers_idents:
+                                idents.append(element[0])
+                            for element in idents:
+                                writers.append(authors_query.filter(Author.id_author == element).first().name)
+                        except Exception as ex:
+                            logger.error(ex, exc_info=True)
+                            s.rollback()
+                            raise ex
+                        finally:
+                            s.close()
+
+                        context = {'writers': writers}
+                        return render(request, 'filtered_authors.html', context)
+
+                    elif amount is None:
+                        try:
+                            filtered_authors = authors
+                            filtered_rows = row_query.filter(Book.title.contains(substring)).group_by(
+                                association_table.c.author_id).all()
+                            for row in filtered_rows:
+                                filtered_counters.append(row[3])
+                        except Exception as ex:
+                            logger.error(ex, exc_info=True)
+                            s.rollback()
+                            raise ex
+                        finally:
+                            s.close()
+
+                        context = {'authors': filtered_authors, 'counters': filtered_counters, 'filtering': filtering}
+                        return render(request, 'main.html', context)
+
+                    else:
+                        print(type(amount))
+                        return HttpResponse('qq')
+
+                except Exception as ex:
+                    logger.error(ex, exc_info=True)
+                    s.rollback()
+                    raise ex
+                finally:
+                    s.close()
 
 
-        elif "sub" in request.POST:
-            substring_filtering = SubstringFilter(request.POST)
-            try:
-                if substring_filtering.is_valid():
-                    try:
-                        substring = substring_filtering.cleaned_data.get('substring')
-                        filtered_authors = authors
-                        filtered_rows = row_query.filter(Book.title.contains(substring)).group_by(association_table.c.author_id).all()
-                        for row in filtered_rows:
-                            filtered_counters.append(row[3])
-                    except Exception as ex:
-                        logger.error(ex, exc_info=True)
-                        s.rollback()
-                        raise ex
-                    finally:
-                        s.close()
-            except:
-                return HttpResponse(status=500, content="Internal Server Error")
+        except:
+            return HttpResponse(status=500, content="Internal Server Error")
 
 
-            context = {'authors': filtered_authors, 'counters': filtered_counters, 'amount_filtering': amount_filtering,
-                       'substring_filtering': substring_filtering}
-            return render(request, 'main.html', context)
 
-
-    context = {'authors': authors, 'counters': counters, 'amount_filtering': amount_filtering, 'substring_filtering': substring_filtering}
+    context = {'authors': authors, 'counters': counters, 'filtering': filtering}
     return render(request, 'main.html', context)
 
 

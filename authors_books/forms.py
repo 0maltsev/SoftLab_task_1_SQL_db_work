@@ -13,9 +13,8 @@ class CreateUserForm(UserCreationForm):
         fields = ['username', 'email', 'password1', 'password2']
 
 
-class AmountFilter(forms.Form):
-    title_amount = forms.IntegerField()
+class Filter(forms.Form):
+    title_amount = forms.IntegerField(required=False)
+    substring = forms.CharField(max_length=100, required=False)
 
 
-class SubstringFilter(forms.Form):
-    substring = forms.CharField(max_length=100)
