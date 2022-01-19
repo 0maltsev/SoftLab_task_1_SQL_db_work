@@ -898,3 +898,43 @@ FROM "Books"
 WHERE "Books".id_book = ?]
 [parameters: ((1,))]
 (Background on this error at: http://sqlalche.me/e/rvf5)
+ERROR 2022-01-19 14:09:15,915 views 21648 21780 name 'associationss_table' is not defined
+Traceback (most recent call last):
+  File "C:\Users\megol\Desktop\softlab\books\authors_books\views.py", line 34, in main
+    rows = s.query(func.count(associationss_table.c.book_id)).group_by(association_table.c.author_id).all()
+NameError: name 'associationss_table' is not defined
+ERROR 2022-01-19 14:13:26,223 views 26512 17576 'list' object has no attribute 'filter'
+Traceback (most recent call last):
+  File "C:\Users\megol\Desktop\softlab\books\authors_books\views.py", line 62, in main
+    writers.append(authors.filter(Author.id_author == element).all()[0][0])
+AttributeError: 'list' object has no attribute 'filter'
+ERROR 2022-01-19 14:15:31,662 views 6160 15164 'Author' object is not subscriptable
+Traceback (most recent call last):
+  File "C:\Users\megol\Desktop\softlab\books\authors_books\views.py", line 63, in main
+    writers.append(authors_query.filter(Author.id_author == element).all()[0][0])
+TypeError: 'Author' object is not subscriptable
+ERROR 2022-01-19 14:15:36,611 views 6160 15164 'Author' object is not subscriptable
+Traceback (most recent call last):
+  File "C:\Users\megol\Desktop\softlab\books\authors_books\views.py", line 63, in main
+    writers.append(authors_query.filter(Author.id_author == element).all()[0][0])
+TypeError: 'Author' object is not subscriptable
+ERROR 2022-01-19 14:16:12,132 views 4356 1436 'Author' object is not subscriptable
+Traceback (most recent call last):
+  File "C:\Users\megol\Desktop\softlab\books\authors_books\views.py", line 63, in main
+    writers.append(s.query(Author).filter(Author.id_author == element).all()[0][0])
+TypeError: 'Author' object is not subscriptable
+ERROR 2022-01-19 14:43:23,790 views 11404 2328 'Query' object has no attribute 'is_clause_element'
+Traceback (most recent call last):
+  File "C:\Users\megol\Desktop\softlab\books\authors_books\views.py", line 36, in main
+    row_query = s.query(Book, association_table, book_id_counter).join(Book, Book.id_book == association_table.c.book_id)
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\orm\session.py", line 1544, in query
+    return self._query_cls(entities, self, **kwargs)
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\orm\query.py", line 168, in __init__
+    self._set_entities(entities)
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\orm\query.py", line 198, in _set_entities
+    entity_wrapper(self, ent)
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\orm\query.py", line 4085, in __new__
+    if not isinstance(entity, util.string_types) and _is_mapped_class(
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\orm\base.py", line 354, in _is_mapped_class
+    and not insp.is_clause_element
+AttributeError: 'Query' object has no attribute 'is_clause_element'

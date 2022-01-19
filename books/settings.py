@@ -142,7 +142,7 @@ LOGGING = {
         'err_file': {
             'level': 'ERROR',
             'class': 'logging.FileHandler',
-            'filename': '/Users/megol/Desktop/softlab/books/logs/ERROR.log',
+            'filename': 'logs/ERROR.log',
             'formatter': 'basic_formatter',
         },
         'info_console': {

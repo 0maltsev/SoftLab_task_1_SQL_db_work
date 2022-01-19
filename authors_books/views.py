@@ -30,11 +30,14 @@ def main(request):
     filtered_counters = list()
     filtered_authors = list()
     try:
-        authors = s.query(Author).all()
-        rows = s.query(func.count(association_table.c.book_id)).group_by(association_table.c.author_id).all()
+        authors_query = s.query(Author)
+        authors = authors_query.all()
+        book_id_counter = func.count(association_table.c.book_id)
+        row_query = s.query(Book, association_table, book_id_counter).join(Book, Book.id_book == association_table.c.book_id)
+        rows = row_query.group_by(association_table.c.author_id).all()
         counters = list()
         for row in rows:
-            counters.append(row[0])
+            counters.append(row[3])
         logger.info('client requests main screen')
     except Exception as ex:
 
@@ -55,11 +58,11 @@ def main(request):
                     try:
                         amount = amount_filtering.cleaned_data['title_amount']
                         writers_idents = s.query(association_table.c.author_id).group_by(
-                            association_table.c.author_id).having(func.count(association_table.c.book_id) >= amount)
+                            association_table.c.author_id).having(book_id_counter >= amount)
                         for element in writers_idents:
                             idents.append(element[0])
                         for element in idents:
-                            writers.append(s.query(Author.name).filter(Author.id_author == element).all()[0][0])
+                            writers.append(authors_query.filter(Author.id_author == element).first().name)
                     except Exception as ex:
                         logger.error(ex, exc_info=True)
                         s.rollback()
@@ -80,8 +83,8 @@ def main(request):
                 if substring_filtering.is_valid():
                     try:
                         substring = substring_filtering.cleaned_data.get('substring')
-                        filtered_authors = s.query(Author).all()
-                        filtered_rows = s.query(Book, association_table, func.count(association_table.c.book_id)).join(Book, Book.id_book == association_table.c.book_id).filter(Book.title.contains(substring)).group_by(association_table.c.author_id).all()
+                        filtered_authors = authors
+                        filtered_rows = row_query.filter(Book.title.contains(substring)).group_by(association_table.c.author_id).all()
                         for row in filtered_rows:
                             filtered_counters.append(row[3])
                     except Exception as ex:
@@ -114,7 +117,8 @@ def book_list(request, pk):
         for element in book_ids:
             titles.append(s.query(Book).filter(Book.id_book == element[0]).all()[0])
 
-        authors = s.query(Author).filter(Author.id_author == pk).all()
+        authors_query = s.query(Author)
+        authors = authors_query.filter(Author.id_author == pk).all()
         logger.info('client requests title_list')
     except Exception as ex:
         logger.error(ex, exc_info=True)
@@ -132,7 +136,7 @@ def book_list(request, pk):
                 try:
                     author_id = form.cleaned_data['author_id']
                     title = form.cleaned_data['title']
-                    writer = s.query(Author).filter(Author.id_author == author_id).all()[0]
+                    writer = authors_query.filter(Author.id_author == author_id).all()[0]
                     new_book = Book(title=title)
                     writer.book.append(new_book)
                     s.add_all([new_book])
