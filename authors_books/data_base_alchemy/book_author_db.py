@@ -42,9 +42,7 @@ Base.metadata.create_all(engine)
 session = sessionmaker(bind=engine)
 s = session()
 
-print(s.query(Book, association_table, func.count(association_table.c.book_id)).join(
-    Book, Book.id_book == association_table.c.book_id).filter(Book.title.contains('A')).group_by(
-                                association_table.c.author_id).having(func.count(association_table.c.book_id)>1).all())
+
 
 
 
