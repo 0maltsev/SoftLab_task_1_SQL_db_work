@@ -95,8 +95,22 @@ def main(request):
                         return render(request, 'main.html', context)
 
                     else:
-                        print(type(amount))
-                        return HttpResponse('qq')
+                        try:
+                            writers_idents = row_query.filter(Book.title.contains(substring)).group_by(
+                                association_table.c.author_id).having(book_id_counter >= amount).all()
+                            for element in writers_idents:
+                                idents.append(element[2])
+                            for element in idents:
+                                writers.append(authors_query.filter(Author.id_author == element).first().name)
+                        except Exception as ex:
+                            logger.error(ex, exc_info=True)
+                            s.rollback()
+                            raise ex
+                        finally:
+                            s.close()
+
+                        context = {'writers': writers}
+                        return render(request, 'filtered_authors.html', context)
 
                 except Exception as ex:
                     logger.error(ex, exc_info=True)

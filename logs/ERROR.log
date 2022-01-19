@@ -938,3 +938,15 @@ Traceback (most recent call last):
   File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\orm\base.py", line 354, in _is_mapped_class
     and not insp.is_clause_element
 AttributeError: 'Query' object has no attribute 'is_clause_element'
+ERROR 2022-01-19 15:50:07,302 views 8400 19748 'Book' object has no attribute 'name'
+Traceback (most recent call last):
+  File "C:\Users\megol\Desktop\softlab\books\authors_books\views.py", line 102, in main
+    writers.append(row[0].name)
+AttributeError: 'Book' object has no attribute 'name'
+ERROR 2022-01-19 15:50:07,304 views 8400 19748 'Book' object has no attribute 'name'
+Traceback (most recent call last):
+  File "C:\Users\megol\Desktop\softlab\books\authors_books\views.py", line 106, in main
+    raise ex
+  File "C:\Users\megol\Desktop\softlab\books\authors_books\views.py", line 102, in main
+    writers.append(row[0].name)
+AttributeError: 'Book' object has no attribute 'name'
