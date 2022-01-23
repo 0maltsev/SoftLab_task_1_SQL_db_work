@@ -33,15 +33,9 @@ def main(request):
             Book, Book.id_book == association_table.c.book_id).join(Author, Author.id_author == association_table.c.author_id)
 
         if request.method == 'GET':
-            try:
-                sql_filtered_rows = sql_filtered_rows.group_by(association_table.c.author_id)
-                logger.info('client requests main screen')
-            except Exception as ex:
-                logger.error(ex, exc_info=True)
-                s.rollback()
-                raise ex
-            finally:
-                s.close()
+            sql_filtered_rows = sql_filtered_rows.group_by(association_table.c.author_id)
+            logger.info('client requests main screen')
+
 
         # фильтрация
         filtering = Filter()
@@ -51,65 +45,28 @@ def main(request):
             filtering = Filter(request.POST)
             try:
                 if filtering.is_valid():
-
                     amount = filtering.cleaned_data['title_amount']
                     substring = filtering.cleaned_data.get('substring')
 
-                    if substring == '' and amount is not None:
-                        try:
-                            sql_filtered_rows = sql_filtered_rows.group_by(
-                                association_table.c.author_id).having(book_id_counter >= amount)
-                        except Exception as ex:
-                            logger.error(ex, exc_info=True)
-                            s.rollback()
-                            raise ex
-                        finally:
-                            s.close()
+                    if substring != '':
+                        sql_filtered_rows = sql_filtered_rows.filter(Book.title.contains(substring))
 
-                    elif amount is None and substring != '':
-                        try:
-                            sql_filtered_rows = sql_filtered_rows.filter(Book.title.contains(substring)).group_by(
-                                association_table.c.author_id)
-                        except Exception as ex:
-                            logger.error(ex, exc_info=True)
-                            s.rollback()
-                            raise ex
-                        finally:
-                            s.close()
 
-                    elif amount is None and substring == '':
-                        try:
-                            sql_filtered_rows = sql_filtered_rows.group_by(association_table.c.author_id)
-                        except Exception as ex:
-                            logger.error(ex, exc_info=True)
-                            s.rollback()
-                            raise ex
-                        finally:
-                            s.close()
+                    sql_filtered_rows = sql_filtered_rows.group_by(
+                            association_table.c.author_id)
 
-                    else:
-                        try:
-                            sql_filtered_rows = sql_filtered_rows.filter(Book.title.contains(substring)).group_by(
-                                association_table.c.author_id).having(book_id_counter >= amount)
-                        except Exception as ex:
-                            logger.error(ex, exc_info=True)
-                            s.rollback()
-                            raise ex
-                        finally:
-                            s.close()
+                    if amount is not None:
+                        sql_filtered_rows = sql_filtered_rows.filter(Book.title.contains(substring)).group_by(
+                            association_table.c.author_id).having(book_id_counter >= amount)
 
             except:
                 return HttpResponse(status=500, content="Internal Server Error")
 
-
         filtered_rows = sql_filtered_rows.all()
-
-        author_and_counter = dict()
         result = list()
         for row in filtered_rows:
             author_and_counter = {'id_author': row[3].id_author, 'name': row[3].name, 'counter': row[4]}
             result.append(author_and_counter)
-        print(result)
         s.close()
 
 
