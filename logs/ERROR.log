@@ -950,3 +950,83 @@ Traceback (most recent call last):
   File "C:\Users\megol\Desktop\softlab\books\authors_books\views.py", line 102, in main
     writers.append(row[0].name)
 AttributeError: 'Book' object has no attribute 'name'
+ERROR 2022-01-22 22:37:58,455 views 12788 19160 Only '=', '!=', 'is_()', 'isnot()', 'is_distinct_from()', 'isnot_distinct_from()' operators can be used with None/True/False
+Traceback (most recent call last):
+  File "C:\Users\megol\Desktop\softlab\books\authors_books\views.py", line 68, in main
+    association_table.c.author_id).having(book_id_counter >= amount)
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\sql\operators.py", line 412, in __ge__
+    return self.operate(ge, other)
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\sql\elements.py", line 725, in operate
+    return op(self.comparator, *other, **kwargs)
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\sql\operators.py", line 412, in __ge__
+    return self.operate(ge, other)
+  File "<string>", line 1, in <lambda>
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\sql\type_api.py", line 67, in operate
+    return o[0](self.expr, op, *(other + o[1:]), **kwargs)
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\sql\default_comparator.py", line 99, in _boolean_compare
+    raise exc.ArgumentError(
+sqlalchemy.exc.ArgumentError: Only '=', '!=', 'is_()', 'isnot()', 'is_distinct_from()', 'isnot_distinct_from()' operators can be used with None/True/False
+ERROR 2022-01-22 22:38:06,598 views 12788 19160 Only '=', '!=', 'is_()', 'isnot()', 'is_distinct_from()', 'isnot_distinct_from()' operators can be used with None/True/False
+Traceback (most recent call last):
+  File "C:\Users\megol\Desktop\softlab\books\authors_books\views.py", line 68, in main
+    association_table.c.author_id).having(book_id_counter >= amount)
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\sql\operators.py", line 412, in __ge__
+    return self.operate(ge, other)
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\sql\elements.py", line 725, in operate
+    return op(self.comparator, *other, **kwargs)
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\sql\operators.py", line 412, in __ge__
+    return self.operate(ge, other)
+  File "<string>", line 1, in <lambda>
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\sql\type_api.py", line 67, in operate
+    return o[0](self.expr, op, *(other + o[1:]), **kwargs)
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\sql\default_comparator.py", line 99, in _boolean_compare
+    raise exc.ArgumentError(
+sqlalchemy.exc.ArgumentError: Only '=', '!=', 'is_()', 'isnot()', 'is_distinct_from()', 'isnot_distinct_from()' operators can be used with None/True/False
+ERROR 2022-01-22 22:45:02,179 views 11088 18992 Only '=', '!=', 'is_()', 'isnot()', 'is_distinct_from()', 'isnot_distinct_from()' operators can be used with None/True/False
+Traceback (most recent call last):
+  File "C:\Users\megol\Desktop\softlab\books\authors_books\views.py", line 68, in main
+    association_table.c.author_id).having(book_id_counter >= amount)
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\sql\operators.py", line 412, in __ge__
+    return self.operate(ge, other)
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\sql\elements.py", line 725, in operate
+    return op(self.comparator, *other, **kwargs)
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\sql\operators.py", line 412, in __ge__
+    return self.operate(ge, other)
+  File "<string>", line 1, in <lambda>
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\sql\type_api.py", line 67, in operate
+    return o[0](self.expr, op, *(other + o[1:]), **kwargs)
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\sql\default_comparator.py", line 99, in _boolean_compare
+    raise exc.ArgumentError(
+sqlalchemy.exc.ArgumentError: Only '=', '!=', 'is_()', 'isnot()', 'is_distinct_from()', 'isnot_distinct_from()' operators can be used with None/True/False
+ERROR 2022-01-22 22:45:04,851 views 11088 18992 Only '=', '!=', 'is_()', 'isnot()', 'is_distinct_from()', 'isnot_distinct_from()' operators can be used with None/True/False
+Traceback (most recent call last):
+  File "C:\Users\megol\Desktop\softlab\books\authors_books\views.py", line 68, in main
+    association_table.c.author_id).having(book_id_counter >= amount)
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\sql\operators.py", line 412, in __ge__
+    return self.operate(ge, other)
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\sql\elements.py", line 725, in operate
+    return op(self.comparator, *other, **kwargs)
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\sql\operators.py", line 412, in __ge__
+    return self.operate(ge, other)
+  File "<string>", line 1, in <lambda>
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\sql\type_api.py", line 67, in operate
+    return o[0](self.expr, op, *(other + o[1:]), **kwargs)
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\sql\default_comparator.py", line 99, in _boolean_compare
+    raise exc.ArgumentError(
+sqlalchemy.exc.ArgumentError: Only '=', '!=', 'is_()', 'isnot()', 'is_distinct_from()', 'isnot_distinct_from()' operators can be used with None/True/False
+ERROR 2022-01-22 22:45:58,023 views 12892 19248 Only '=', '!=', 'is_()', 'isnot()', 'is_distinct_from()', 'isnot_distinct_from()' operators can be used with None/True/False
+Traceback (most recent call last):
+  File "C:\Users\megol\Desktop\softlab\books\authors_books\views.py", line 68, in main
+    association_table.c.author_id).having(book_id_counter >= amount)
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\sql\operators.py", line 412, in __ge__
+    return self.operate(ge, other)
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\sql\elements.py", line 725, in operate
+    return op(self.comparator, *other, **kwargs)
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\sql\operators.py", line 412, in __ge__
+    return self.operate(ge, other)
+  File "<string>", line 1, in <lambda>
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\sql\type_api.py", line 67, in operate
+    return o[0](self.expr, op, *(other + o[1:]), **kwargs)
+  File "C:\Users\megol\AppData\Local\Programs\Python\Python39\lib\site-packages\sqlalchemy\sql\default_comparator.py", line 99, in _boolean_compare
+    raise exc.ArgumentError(
+sqlalchemy.exc.ArgumentError: Only '=', '!=', 'is_()', 'isnot()', 'is_distinct_from()', 'isnot_distinct_from()' operators can be used with None/True/False

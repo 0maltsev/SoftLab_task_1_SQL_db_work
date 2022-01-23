@@ -25,48 +25,40 @@ def main(request):
     session = sessionmaker(bind=engine)
     s = session()
 
-    idents = list()
-    writers = list()
-    filtered_counters = list()
-    filtered_authors = list()
     try:
-        authors_query = s.query(Author)
-        authors = authors_query.all()
         book_id_counter = func.count(association_table.c.book_id)
-        row_query = s.query(Book, association_table, book_id_counter).join(Book, Book.id_book == association_table.c.book_id)
-        rows = row_query.group_by(association_table.c.author_id).all()
-        counters = list()
-        for row in rows:
-            counters.append(row[3])
-        logger.info('client requests main screen')
-    except Exception as ex:
 
-        logger.error(ex, exc_info=True)
-        s.rollback()
-        return HttpResponse(status=500, content=RESP_MSG_INTERNAL_ERROR)
-    finally:
-        s.close()
+        # базовый запрос для всех дальнейших фильтраций
+        sql_filtered_rows = s.query(Book, association_table, Author, book_id_counter).join(
+            Book, Book.id_book == association_table.c.book_id).join(Author, Author.id_author == association_table.c.author_id)
 
+        if request.method == 'GET':
+            try:
+                sql_filtered_rows = sql_filtered_rows.group_by(association_table.c.author_id)
+                logger.info('client requests main screen')
+            except Exception as ex:
+                logger.error(ex, exc_info=True)
+                s.rollback()
+                raise ex
+            finally:
+                s.close()
 
-    filtering = Filter()
+        # фильтрация
+        filtering = Filter()
 
-    if request.method == 'POST':
+        if request.method == 'POST':
 
-        filtering = Filter(request.POST)
-        try:
-            if filtering.is_valid():
-                try:
+            filtering = Filter(request.POST)
+            try:
+                if filtering.is_valid():
+
                     amount = filtering.cleaned_data['title_amount']
                     substring = filtering.cleaned_data.get('substring')
 
-                    if substring == '':
+                    if substring == '' and amount is not None:
                         try:
-                            writers_idents = s.query(association_table.c.author_id).group_by(
+                            sql_filtered_rows = sql_filtered_rows.group_by(
                                 association_table.c.author_id).having(book_id_counter >= amount)
-                            for element in writers_idents:
-                                idents.append(element[0])
-                            for element in idents:
-                                writers.append(authors_query.filter(Author.id_author == element).first().name)
                         except Exception as ex:
                             logger.error(ex, exc_info=True)
                             s.rollback()
@@ -74,16 +66,10 @@ def main(request):
                         finally:
                             s.close()
 
-                        context = {'writers': writers}
-                        return render(request, 'filtered_authors.html', context)
-
-                    elif amount is None:
+                    elif amount is None and substring != '':
                         try:
-                            filtered_authors = authors
-                            filtered_rows = row_query.filter(Book.title.contains(substring)).group_by(
-                                association_table.c.author_id).all()
-                            for row in filtered_rows:
-                                filtered_counters.append(row[3])
+                            sql_filtered_rows = sql_filtered_rows.filter(Book.title.contains(substring)).group_by(
+                                association_table.c.author_id)
                         except Exception as ex:
                             logger.error(ex, exc_info=True)
                             s.rollback()
@@ -91,17 +77,20 @@ def main(request):
                         finally:
                             s.close()
 
-                        context = {'authors': filtered_authors, 'counters': filtered_counters, 'filtering': filtering}
-                        return render(request, 'main.html', context)
+                    elif amount is None and substring == '':
+                        try:
+                            sql_filtered_rows = sql_filtered_rows.group_by(association_table.c.author_id)
+                        except Exception as ex:
+                            logger.error(ex, exc_info=True)
+                            s.rollback()
+                            raise ex
+                        finally:
+                            s.close()
 
                     else:
                         try:
-                            writers_idents = row_query.filter(Book.title.contains(substring)).group_by(
-                                association_table.c.author_id).having(book_id_counter >= amount).all()
-                            for element in writers_idents:
-                                idents.append(element[2])
-                            for element in idents:
-                                writers.append(authors_query.filter(Author.id_author == element).first().name)
+                            sql_filtered_rows = sql_filtered_rows.filter(Book.title.contains(substring)).group_by(
+                                association_table.c.author_id).having(book_id_counter >= amount)
                         except Exception as ex:
                             logger.error(ex, exc_info=True)
                             s.rollback()
@@ -109,24 +98,35 @@ def main(request):
                         finally:
                             s.close()
 
-                        context = {'writers': writers}
-                        return render(request, 'filtered_authors.html', context)
-
-                except Exception as ex:
-                    logger.error(ex, exc_info=True)
-                    s.rollback()
-                    raise ex
-                finally:
-                    s.close()
+            except:
+                return HttpResponse(status=500, content="Internal Server Error")
 
 
-        except:
-            return HttpResponse(status=500, content="Internal Server Error")
+        filtered_rows = sql_filtered_rows.all()
+
+        author_and_counter = dict()
+        result = list()
+        for row in filtered_rows:
+            author_and_counter = {'id_author': row[3].id_author, 'name': row[3].name, 'counter': row[4]}
+            result.append(author_and_counter)
+        print(result)
 
 
 
-    context = {'authors': authors, 'counters': counters, 'filtering': filtering}
-    return render(request, 'main.html', context)
+
+        # authors = list()
+        # counters = list()
+        # for row in filtered_rows:
+        #     authors.append(row[3])
+        #     counters.append(row[4])
+        # context = {'authors': authors, 'counters': counters, 'filtering': filtering}
+
+
+        context = {'result': result, 'filtering': filtering}
+        return render(request, 'main.html', context)
+
+    except:
+        return HttpResponse(status=500, content="Internal Server Error")
 
 
 

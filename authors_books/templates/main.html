@@ -17,24 +17,19 @@
 </div>
 
 <div class = 'container'>
-    <div class="row">
-        <div class="col-2">
-            {% for author in authors %}
-                <div>
-                    <a href = "{% url 'titles_list' author.id_author %}">{{author.name}}</a>
+            {% for dict in result %}
+                <div class="row">
+                    <div class="col-2">
+                        <a href = "{% url 'titles_list' dict.id_author %}">{{dict.name}}</a>
+                    </div>
+
+                    <div class="col-2">
+                        <div>
+                            {{ dict.counter }}
+                        </div>
+                    </div>
                 </div>
             {% endfor %}
-        </div>
-        <div class="col-2">
-            {% for counter in counters %}
-                <div>
-
-                    {{ counter }}
-
-                </div>
-            {% endfor %}
-        </div>
-    </div>
 </div>
 </body>
 </html>
