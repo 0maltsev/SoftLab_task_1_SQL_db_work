@@ -110,6 +110,7 @@ def main(request):
             author_and_counter = {'id_author': row[3].id_author, 'name': row[3].name, 'counter': row[4]}
             result.append(author_and_counter)
         print(result)
+        s.close()
 
 
 
