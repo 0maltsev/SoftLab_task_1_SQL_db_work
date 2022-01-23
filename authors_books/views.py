@@ -26,15 +26,15 @@ def main(request):
     s = session()
 
     try:
+
+        substring = ''
+        amount = None
+
         book_id_counter = func.count(association_table.c.book_id)
 
         # базовый запрос для всех дальнейших фильтраций
         sql_filtered_rows = s.query(Book, association_table, Author, book_id_counter).join(
             Book, Book.id_book == association_table.c.book_id).join(Author, Author.id_author == association_table.c.author_id)
-
-        if request.method == 'GET':
-            sql_filtered_rows = sql_filtered_rows.group_by(association_table.c.author_id)
-            logger.info('client requests main screen')
 
 
         # фильтрация
@@ -43,24 +43,19 @@ def main(request):
         if request.method == 'POST':
 
             filtering = Filter(request.POST)
-            try:
-                if filtering.is_valid():
-                    amount = filtering.cleaned_data['title_amount']
-                    substring = filtering.cleaned_data.get('substring')
 
-                    if substring != '':
-                        sql_filtered_rows = sql_filtered_rows.filter(Book.title.contains(substring))
+            if filtering.is_valid():
+                amount = filtering.cleaned_data['title_amount']
+                substring = filtering.cleaned_data.get('substring')
 
+        if substring != '':
+            sql_filtered_rows = sql_filtered_rows.filter(Book.title.contains(substring))
 
-                    sql_filtered_rows = sql_filtered_rows.group_by(
-                            association_table.c.author_id)
+        sql_filtered_rows = sql_filtered_rows.group_by(association_table.c.author_id)
 
-                    if amount is not None:
-                        sql_filtered_rows = sql_filtered_rows.filter(Book.title.contains(substring)).group_by(
-                            association_table.c.author_id).having(book_id_counter >= amount)
+        if amount is not None:
+            sql_filtered_rows = sql_filtered_rows.having(book_id_counter >= amount)
 
-            except:
-                return HttpResponse(status=500, content="Internal Server Error")
 
         filtered_rows = sql_filtered_rows.all()
         result = list()
